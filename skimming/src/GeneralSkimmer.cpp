@@ -68,6 +68,10 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
    //
    // The return value is currently not used.
 
+    if(entry % 50000 == 0){
+    std::cout << "Events processed: " << entry << std::endl;
+    }
+
 
    return kTRUE;
 }
