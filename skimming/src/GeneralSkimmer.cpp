@@ -30,11 +30,11 @@
 
 void GeneralSkimmer::Begin(TTree * /*tree*/)
 {
-   // The Begin() function is called at the start of the query.
-   // When running with PROOF Begin() is only called on the client.
-   // The tree argument is deprecated (on PROOF 0 is passed).
+    // The Begin() function is called at the start of the query.
+    // When running with PROOF Begin() is only called on the client.
+    // The tree argument is deprecated (on PROOF 0 is passed).
 
-   TString option = GetOption();
+    TString option = GetOption();
 
 }
 
@@ -68,12 +68,90 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
    //
    // The return value is currently not used.
 
+    int eSize = fChain->GetTree()->GetEntry(entry);
     if(entry % 50000 == 0){
     std::cout << "Events processed: " << entry << std::endl;
+    std::cout << " - event size is: " << eSize << " bytes" << std::endl;
     }
 
+    // Electron Selection
+    int nElec = T_Elec_Pt->size();
+    std::vector<TLorentzVector> vElec; // vector for valid electrons
+    std::vector<int> cElec; // electron charge vector
+    for (int i=0; i < nElec; i++) {
 
-   return kTRUE;
+        // geometry dependent cuts
+        bool gCuts = false;
+        if( T_Elec_isEB->at(i) && // i.e. barrel electron
+             ((fabs(T_Elec_deltaEtaIn->at(i)) < 0.004) &&
+              (fabs(T_Elec_deltaPhiIn->at(i)) < 0.06 ) &&
+              (T_Elec_sigmaIetaIeta->at(i) < 0.01 ) &&
+              (T_Elec_HtoE->at(i) < 0.12 ))) gCuts = true;
+        else if( T_Elec_isEE->at(i) && // i.e. endcap electron
+             ((T_Elec_deltaEtaIn->at(i) < 0.007) &&
+              (T_Elec_deltaPhiIn->at(i) < 0.03 ) &&
+              (T_Elec_sigmaIetaIeta->at(i) < 0.03 ) &&
+              (T_Elec_HtoE->at(i) < 0.10 ))) gCuts = true;
+
+        // relative electron isolation
+        double elecRelIso = (T_Elec_chargedHadronIso->at(i) + std::max(0.0,T_Elec_neutralHadronIso->at(i) + T_Elec_photonIso->at(i) - (T_Event_RhoIso * GetEffectiveArea( T_Elec_SC_Eta->at(i))) ) )/ T_Elec_Pt->at(i);
+
+        if(gCuts &&
+           T_Elec_simpleEleId80->at(i) &&
+           T_Elec_passConversionVeto->at(i) &&
+           T_Elec_isPF->at(i) &&
+           (T_Elec_isEB->at(i) || T_Elec_isEE->at(i)) &&
+           fabs( (1-T_Elec_eSuperClusterOverP->at(i))/T_Elec_ecalEnergy->at(i)) < 0.05   &&
+           (fabs(T_Elec_SC_Eta->at(i) ) < 1.4442 || fabs(T_Elec_SC_Eta->at(i)) > 1.566 ) &&
+           fabs( T_Elec_Pt->at(i) - T_Elec_PFElecPt->at(i) ) < 10. &&
+           fabs( T_Elec_IPwrtPV->at(i) ) <  0.02 &&
+           fabs( T_Elec_dzwrtPV->at(i) ) <  0.1  &&
+           elecRelIso <= 0.15 &&
+           T_Elec_nHits->at(i) >= 1 &&
+           T_Elec_Pt->at(i) >= 20. &&
+           fabs(T_Elec_SC_Eta->at(i)) <= 2.5
+           ) {
+            // add good electron to vector
+            TLorentzVector gElec( T_Elec_Px->at(i), T_Elec_Py->at(i),
+                                  T_Elec_Pz->at(i), T_Elec_Energy->at(i));
+            vElec.push_back(gElec);
+            cElec.push_back(T_Elec_Charge->at(i));
+        } // end if good electron
+    } // end electron loop
+
+
+    // Muon Selection
+    int nMuon = T_Muon_Pt->size();
+    std::vector <TLorentzVector> vMuon; // vector for the good muons
+    std::vector <int> cMuon; // muon charge vector
+    for (int i = 0; i < nMuon; i++ ) {
+
+        // relative muon isolation
+        double muonRelIso = muonRelIso = (T_Muon_chargedHadronIsoR03->at(i) + std::max(0.0, T_Muon_neutralHadronIsoR03->at(i) + T_Muon_photonIsoR03->at(i) - 0.5*T_Muon_sumPUPtR03->at(i))) / T_Muon_Pt->at(i);
+
+        if(T_Muon_IsGlobalMuon->at(i) &&
+           T_Muon_IsGMPTMuons->at(i) &&
+           T_Muon_isPFMuon->at(i) &&
+           T_Muon_Chi2InTrk->at(i) < 10 &&  // not in FRs code
+           T_Muon_NValidHitsInTrk->at(i) > 0 &&  // not in FRs code
+           T_Muon_NumOfMatchedStations->at(i) > 1 &&
+           T_Muon_IPwrtAveBSInTrack->at(i) < 0.2 &&
+           fabs(T_Muon_vz->at(i) - T_Vertex_z->at(0)) < 0.5 &&
+           T_Muon_NLayers->at(i) > 5 &&
+           T_Muon_NValidPixelHitsInTrk->at(i) > 0 &&
+           muonRelIso <=  0.15  &&
+           T_Muon_Pt->at(i) >= 20. &&
+           fabs(T_Muon_Eta->at(i)) <=  2.4   &&
+           fabs( T_Muon_Pt->at(i) - T_Muon_PFMuonPt->at(i) ) < 5.
+           ) {
+            TLorentzVector gMuon(T_Muon_Px->at(i), T_Muon_Py->at(i),
+                                 T_Muon_Pz->at(i), T_Muon_Energy->at(i));
+            vMuon.push_back(gMuon);
+            cMuon.push_back(T_Muon_Charge->at(i));
+        } // end if good muon
+    } // end muon loop
+
+    return kTRUE;
 }
 
 void GeneralSkimmer::SlaveTerminate()
@@ -90,4 +168,22 @@ void GeneralSkimmer::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
+}
+
+//------------------------------------------------------------------------------
+// Effective areas for rho correction to electron isolation
+//------------------------------------------------------------------------------
+Double_t GetEffectiveArea(float eta)
+{
+  Double_t Aeff=0.;
+
+  if( fabs(eta) < 1.0 )         Aeff = 0.13; // +/- 0.001
+  else if( fabs(eta)<1.479 )    Aeff = 0.14; // +/- 0.002
+  else if( fabs(eta)<2.0 )      Aeff = 0.07; // +/- 0.001
+  else if( fabs(eta)<2.2 )      Aeff = 0.09; // +/- 0.001
+  else if( fabs(eta)<2.3 )      Aeff = 0.11; // +/- 0.002
+  else if( fabs(eta)<2.4 )      Aeff = 0.11; // +/- 0.003
+  if( fabs(eta) > 2.4 )         Aeff = 0.14; // +/- 0.004
+
+  return Aeff;
 }

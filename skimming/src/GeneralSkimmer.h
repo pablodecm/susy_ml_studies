@@ -12,6 +12,7 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TSelector.h>
+#include <TLorentzVector.h>
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
@@ -1160,6 +1161,7 @@ void GeneralSkimmer::Init(TTree *tree)
    fChain->SetBranchAddress("T_passTriggerDoubleMu", &T_passTriggerDoubleMu, &b_T_passTriggerDoubleMu);
    fChain->SetBranchAddress("T_passTriggerDoubleEl", &T_passTriggerDoubleEl, &b_T_passTriggerDoubleEl);
    fChain->SetBranchAddress("T_passTriggerElMu", &T_passTriggerElMu, &b_T_passTriggerElMu);
+
 }
 
 Bool_t GeneralSkimmer::Notify()
@@ -1172,5 +1174,7 @@ Bool_t GeneralSkimmer::Notify()
 
    return kTRUE;
 }
+
+Double_t GetEffectiveArea(float eta);
 
 #endif // #ifdef GeneralSkimmer_cxx
