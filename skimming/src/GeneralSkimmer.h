@@ -18,10 +18,27 @@
 #include <vector>
 #include <iostream>
 
+struct EventInfo{
+    int runNumber;
+    int lumiBlock;
+    int eventNumber;
+    int processID;
+};
+
+struct EventData{
+    int channel;
+};
+
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
 class GeneralSkimmer : public TSelector {
+
+protected:
+   EventData      _eventData;
+   EventData      _genData;
+   TTree          *skimTree;
+   TTree          *genTree;
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
@@ -595,7 +612,7 @@ public :
    TBranch        *b_T_passTriggerDoubleEl;   //!
    TBranch        *b_T_passTriggerElMu;   //!
 
-   GeneralSkimmer(TTree * /*tree*/ =0) : fChain(0) { }
+   GeneralSkimmer(TTree * /*tree*/ =0) : fChain(0), skimTree(0) { }
    virtual ~GeneralSkimmer() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);

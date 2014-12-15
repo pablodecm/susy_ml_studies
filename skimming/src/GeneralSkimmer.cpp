@@ -46,6 +46,14 @@ void GeneralSkimmer::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
 
+   skimTree = new TTree("skimTree", "Skimmed TTree for output");
+   skimTree->Branch("eventData", &_eventData.channel, "channel/I" );
+   fOutput->Add(skimTree);
+
+   genTree = new TTree("genTree", "TTree with generation level info");
+   genTree->Branch("genData", &_genData.channel, "channel/I" );
+   fOutput->Add(genTree);
+
 }
 
 Bool_t GeneralSkimmer::Process(Long64_t entry)
@@ -88,13 +96,15 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
               (T_Elec_sigmaIetaIeta->at(i) < 0.01 ) &&
               (T_Elec_HtoE->at(i) < 0.12 ))) gCuts = true;
         else if( T_Elec_isEE->at(i) && // i.e. endcap electron
-             ((T_Elec_deltaEtaIn->at(i) < 0.007) &&
-              (T_Elec_deltaPhiIn->at(i) < 0.03 ) &&
+             ((fabs(T_Elec_deltaEtaIn->at(i)) < 0.007) &&
+              (fabs(T_Elec_deltaPhiIn->at(i)) < 0.03 ) &&
               (T_Elec_sigmaIetaIeta->at(i) < 0.03 ) &&
               (T_Elec_HtoE->at(i) < 0.10 ))) gCuts = true;
 
         // relative electron isolation
-        double elecRelIso = (T_Elec_chargedHadronIso->at(i) + std::max(0.0,T_Elec_neutralHadronIso->at(i) + T_Elec_photonIso->at(i) - (T_Event_RhoIso * GetEffectiveArea( T_Elec_SC_Eta->at(i))) ) )/ T_Elec_Pt->at(i);
+        double elecRelIso = (T_Elec_chargedHadronIso->at(i) + std::max(0.0,
+                    T_Elec_neutralHadronIso->at(i) + T_Elec_photonIso->at(i)
+                    - (T_Event_RhoIso * GetEffectiveArea( T_Elec_SC_Eta->at(i)))))/ T_Elec_Pt->at(i);
 
         if(gCuts &&
            T_Elec_simpleEleId80->at(i) &&
@@ -107,8 +117,8 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
            fabs( T_Elec_IPwrtPV->at(i) ) <  0.02 &&
            fabs( T_Elec_dzwrtPV->at(i) ) <  0.1  &&
            elecRelIso <= 0.15 &&
-           T_Elec_nHits->at(i) >= 1 &&
-           T_Elec_Pt->at(i) >= 20. &&
+           // T_Elec_nHits->at(i) > 0 && // there seems to be a problem with this variable
+           T_Elec_Pt->at(i) >= 10. &&
            fabs(T_Elec_SC_Eta->at(i)) <= 2.5
            ) {
             // add good electron to vector
@@ -127,12 +137,14 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     for (int i = 0; i < nMuon; i++ ) {
 
         // relative muon isolation
-        double muonRelIso = muonRelIso = (T_Muon_chargedHadronIsoR03->at(i) + std::max(0.0, T_Muon_neutralHadronIsoR03->at(i) + T_Muon_photonIsoR03->at(i) - 0.5*T_Muon_sumPUPtR03->at(i))) / T_Muon_Pt->at(i);
+        double muonRelIso = (T_Muon_chargedHadronIsoR03->at(i) + std::max(0.0,
+                    T_Muon_neutralHadronIsoR03->at(i) + T_Muon_photonIsoR03->at(i)
+                    - 0.5*T_Muon_sumPUPtR03->at(i))) / T_Muon_Pt->at(i);
 
         if(T_Muon_IsGlobalMuon->at(i) &&
            T_Muon_IsGMPTMuons->at(i) &&
            T_Muon_isPFMuon->at(i) &&
-           T_Muon_Chi2InTrk->at(i) < 10 &&  // not in FRs code
+           T_Muon_NormChi2GTrk->at(i) < 10 &&  // not in FRs code ( normalized is important!)
            T_Muon_NValidHitsInTrk->at(i) > 0 &&  // not in FRs code
            T_Muon_NumOfMatchedStations->at(i) > 1 &&
            T_Muon_IPwrtAveBSInTrack->at(i) < 0.2 &&
@@ -140,9 +152,9 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
            T_Muon_NLayers->at(i) > 5 &&
            T_Muon_NValidPixelHitsInTrk->at(i) > 0 &&
            muonRelIso <=  0.15  &&
-           T_Muon_Pt->at(i) >= 20. &&
-           fabs(T_Muon_Eta->at(i)) <=  2.4   &&
-           fabs( T_Muon_Pt->at(i) - T_Muon_PFMuonPt->at(i) ) < 5.
+           T_Muon_Pt->at(i) >= 10. &&
+           fabs(T_Muon_Eta->at(i)) <=  2.4  //&&
+           //fabs( T_Muon_Pt->at(i) - T_Muon_PFMuonPt->at(i) ) < 5.
            ) {
             TLorentzVector gMuon(T_Muon_Px->at(i), T_Muon_Py->at(i),
                                  T_Muon_Pz->at(i), T_Muon_Energy->at(i));
@@ -151,6 +163,38 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
         } // end if good muon
     } // end muon loop
 
+    // get number of events at each channel at gen level
+    int nSt3Elec = T_Gen_ElecSt3_energy->size();
+    int nSt3Muon = T_Gen_MuonSt3_energy->size();
+    int nSt3Tau = T_Gen_TauSt3_energy->size();
+    _genData.channel = -1;
+    if(nSt3Elec == 2 && nSt3Muon == 0 && nSt3Tau == 0 ) {
+        _genData.channel = 0;
+    } else if (nSt3Elec == 0 && nSt3Muon == 2 && nSt3Tau == 0 ) {
+        _genData.channel = 1;
+    } else if (nSt3Elec == 1 && nSt3Muon == 1 && nSt3Tau == 0 ) {
+        _genData.channel = 2;
+    } else if (nSt3Elec == 0 && nSt3Muon == 0 && nSt3Tau == 2 ) {
+        _genData.channel = 10; // tau-tau final state
+    }
+    if (_genData.channel >= 0) {
+        genTree->Fill();
+    }
+
+    // obtain channel (veto any event with additional leptons)
+    int nGoodElec = vElec.size();
+    int nGoodMuon = vMuon.size();
+    _eventData.channel = -1;
+    if(nGoodElec == 2 && nGoodMuon == 0) {
+        _eventData.channel = 0;
+    } else if (nGoodElec == 0 && nGoodMuon == 2 ) {
+        _eventData.channel = 1;
+    } else if (nGoodElec == 1 && nGoodMuon == 1 ) {
+        _eventData.channel = 2;
+    }
+    if (_eventData.channel >= 0) {
+        skimTree->Fill();
+    }
     return kTRUE;
 }
 
@@ -167,6 +211,19 @@ void GeneralSkimmer::Terminate()
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
+
+    TTree* skimTree = dynamic_cast<TTree *>(fOutput->FindObject(Form("skimTree")));
+    std::cout << "Total number of selected entries: " << skimTree->GetEntries() << std::endl;
+    std::cout << "  - ee      channel: " << skimTree->Draw("channel", "channel == 0", "goff") << std::endl;
+    std::cout << "  - mumu    channel: " << skimTree->Draw("channel", "channel == 1", "goff") << std::endl;
+    std::cout << "  - emu+mue channel: " << skimTree->Draw("channel", "channel == 2", "goff") << std::endl;
+
+    TTree* genTree = dynamic_cast<TTree *>(fOutput->FindObject(Form("genTree")));
+    std::cout << "Total number of signal entries: " << genTree->GetEntries() << std::endl;
+    std::cout << "  - ee      channel: " << genTree->Draw("channel", "channel == 0", "goff") << std::endl;
+    std::cout << "  - mumu    channel: " << genTree->Draw("channel", "channel == 1", "goff") << std::endl;
+    std::cout << "  - emu+mue channel: " << genTree->Draw("channel", "channel == 2", "goff") << std::endl;
+    std::cout << "  - tau-tau channel: " << genTree->Draw("channel", "channel == 10", "goff") << std::endl;
 
 }
 
