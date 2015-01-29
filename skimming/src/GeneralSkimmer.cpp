@@ -1,4 +1,6 @@
+
 #define GeneralSkimmer_cxx
+
 // The class definition in GeneralSkimmer.h has been generated automatically
 // by the ROOT utility TTree::MakeSelector(). This class is derived
 // from the ROOT class TSelector. For more information on the TSelector
@@ -50,9 +52,25 @@ void GeneralSkimmer::SlaveBegin(TTree * /*tree*/)
    skimTree->Branch("eventData", &_eventData.channel, "channel/I" );
    fOutput->Add(skimTree);
 
-   genTree = new TTree("genTree", "TTree with generation level info");
-   genTree->Branch("genData", &_genData.channel, "channel/I" );
-   fOutput->Add(genTree);
+   h_gen_ch_all = new TH2I("h_gen_ch_all","Events per channel (generation level - no acceptance cuts)",
+           3, 0.0, 3.0,3,0.0,3.0);
+   h_gen_ch_all->GetXaxis()->SetBinLabel(1,"e");
+   h_gen_ch_all->GetXaxis()->SetBinLabel(2,"#mu");
+   h_gen_ch_all->GetXaxis()->SetBinLabel(3,"#tau");
+   h_gen_ch_all->GetYaxis()->SetBinLabel(1,"e");
+   h_gen_ch_all->GetYaxis()->SetBinLabel(2,"#mu");
+   h_gen_ch_all->GetYaxis()->SetBinLabel(3,"#tau");
+   fOutput->Add(h_gen_ch_all);
+
+   h_gen_ch_acc = new TH2I("h_gen_ch_acc","Events per channel (generation level - with acceptance cuts)",
+           3, 0.0, 3.0,3,0.0,3.0);
+   h_gen_ch_acc->GetXaxis()->SetBinLabel(1,"e");
+   h_gen_ch_acc->GetXaxis()->SetBinLabel(2,"#mu");
+   h_gen_ch_acc->GetXaxis()->SetBinLabel(3,"#tau");
+   h_gen_ch_acc->GetYaxis()->SetBinLabel(1,"e");
+   h_gen_ch_acc->GetYaxis()->SetBinLabel(2,"#mu");
+   h_gen_ch_acc->GetYaxis()->SetBinLabel(3,"#tau");
+   fOutput->Add(h_gen_ch_acc);
 
 }
 
@@ -153,8 +171,8 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
            T_Muon_NValidPixelHitsInTrk->at(i) > 0 &&
            muonRelIso <=  0.15  &&
            T_Muon_Pt->at(i) >= 10. &&
-           fabs(T_Muon_Eta->at(i)) <=  2.4  //&&
-           //fabs( T_Muon_Pt->at(i) - T_Muon_PFMuonPt->at(i) ) < 5.
+           fabs(T_Muon_Eta->at(i)) <=  2.4  &&
+           fabs( T_Muon_Pt->at(i) - T_Muon_PFMuonPt->at(i) ) < 5.
            ) {
             TLorentzVector gMuon(T_Muon_Px->at(i), T_Muon_Py->at(i),
                                  T_Muon_Pz->at(i), T_Muon_Energy->at(i));
@@ -163,35 +181,78 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
         } // end if good muon
     } // end muon loop
 
-    // get number of events at each channel at gen level
+    // get number of events at each channel at gen level (no acceptance cuts)
     int nSt3Elec = T_Gen_ElecSt3_energy->size();
     int nSt3Muon = T_Gen_MuonSt3_energy->size();
     int nSt3Tau = T_Gen_TauSt3_energy->size();
-    _genData.channel = -1;
     if(nSt3Elec == 2 && nSt3Muon == 0 && nSt3Tau == 0 ) {
-        _genData.channel = 0;
+        h_gen_ch_all->Fill("e","e",1);
     } else if (nSt3Elec == 0 && nSt3Muon == 2 && nSt3Tau == 0 ) {
-        _genData.channel = 1;
-    } else if (nSt3Elec == 1 && nSt3Muon == 1 && nSt3Tau == 0 ) {
-        _genData.channel = 2;
+        h_gen_ch_all->Fill("#mu","#mu",1);
     } else if (nSt3Elec == 0 && nSt3Muon == 0 && nSt3Tau == 2 ) {
-        _genData.channel = 10; // tau-tau final state
-    }
-    if (_genData.channel >= 0) {
-        genTree->Fill();
+        h_gen_ch_all->Fill("#tau","#tau",1);
     }
 
-    // obtain channel (veto any event with additional leptons)
+    // get number of events at each channel at gen level (with acceptance cuts)
+    // int nAccElec = T_Gen_ElecSt3_energy->size();
+    // int nAccMuon = T_Gen_MuonSt3_energy->size();
+    // int nAccTau = T_Gen_TauSt3_energy->size();
+
+    // obtain channel and selected leptons  (veto any event with additional leptons)
     int nGoodElec = vElec.size();
     int nGoodMuon = vMuon.size();
+    bool isOppSign = false;
     _eventData.channel = -1;
+    std::vector <TLorentzVector> vLept;
     if(nGoodElec == 2 && nGoodMuon == 0) {
-        _eventData.channel = 0;
+        _eventData.channel = 0; // ee channel
+        vLept.push_back(vElec[0]);
+        vLept.push_back(vElec[1]);
+        if (cElec[0]*cElec[1] < 0) isOppSign =  true;
     } else if (nGoodElec == 0 && nGoodMuon == 2 ) {
-        _eventData.channel = 1;
+        _eventData.channel = 1; // mumu channel
+        vLept.push_back(vMuon[0]);
+        vLept.push_back(vMuon[1]);
+        if (cMuon[0]*cMuon[1] < 0) isOppSign =  true;
     } else if (nGoodElec == 1 && nGoodMuon == 1 ) {
-        _eventData.channel = 2;
+        _eventData.channel = 2; // emu+mue channel
+        if (vElec[0].Pt() > vMuon[0].Pt() ) {
+            vLept.push_back(vElec[0]);
+            vLept.push_back(vMuon[0]);
+        }
+        else if (vMuon[0].Pt() > vElec[0].Pt()) {
+            vLept.push_back(vMuon[0]);
+            vLept.push_back(vElec[0]);  
+        }
+        if (cElec[0]*cMuon[0] < 0) isOppSign =  true;
+    } else {
+      return kFALSE; // exit if not two leptons are present
     }
+
+    // dilepton invariant mass
+    _eventData.dilMass = (vLept[0]+vLept[1]).M();
+
+    // Jet Selection
+    int nJet= T_JetAKCHS_Et->size();
+    std::vector <TLorentzVector> vJet;
+    _eventData.htJets = 0;
+    for ( int i = 0 ; i < nJet; i++) {
+        if (T_JetAKCHS_Et->at(i) > 30 &&
+            fabs(T_JetAKCHS_Eta->at(i)) < 2.4 ) {
+            _eventData.htJets += T_JetAKCHS_Et->at(i);
+            _eventData.nJets++;
+            // check if bjet
+            bool isBJet = T_JetAKCHS_Tag_CombSVtx->at(i) > 0.679;
+            if (isBJet) _eventData.nBJets++;
+            // keep only two higher pt jets
+            while(vJet.size() < 3) {
+              TLorentzVector gJet( T_JetAKCHS_Px->at(i), T_JetAKCHS_Py->at(i),
+                                   T_JetAKCHS_Pz->at(i), T_JetAKCHS_Energy->at(i));
+              vJet.push_back(gJet);
+            } // end only saving two jets 
+        } // end good jet loop
+    } // end jet loop
+    
     if (_eventData.channel >= 0) {
         skimTree->Fill();
     }
@@ -218,12 +279,11 @@ void GeneralSkimmer::Terminate()
     std::cout << "  - mumu    channel: " << skimTree->Draw("channel", "channel == 1", "goff") << std::endl;
     std::cout << "  - emu+mue channel: " << skimTree->Draw("channel", "channel == 2", "goff") << std::endl;
 
-    TTree* genTree = dynamic_cast<TTree *>(fOutput->FindObject(Form("genTree")));
-    std::cout << "Total number of signal entries: " << genTree->GetEntries() << std::endl;
-    std::cout << "  - ee      channel: " << genTree->Draw("channel", "channel == 0", "goff") << std::endl;
-    std::cout << "  - mumu    channel: " << genTree->Draw("channel", "channel == 1", "goff") << std::endl;
-    std::cout << "  - emu+mue channel: " << genTree->Draw("channel", "channel == 2", "goff") << std::endl;
-    std::cout << "  - tau-tau channel: " << genTree->Draw("channel", "channel == 10", "goff") << std::endl;
+    TH2I* h_gen_ch_all = dynamic_cast<TH2I *>(fOutput->FindObject(Form("h_gen_ch_all")));
+    std::cout << "Total number of signal entries: " << h_gen_ch_all->Integral() << std::endl;
+    std::cout << "  - ee      channel: " << h_gen_ch_all->GetBinContent(1,1) << std::endl;
+    std::cout << "  - mumu    channel: " << h_gen_ch_all->GetBinContent(2,2) << std::endl;
+    std::cout << "  - tau-tau channel: " << h_gen_ch_all->GetBinContent(3,3) << std::endl;
 
 }
 
@@ -243,4 +303,32 @@ Double_t GetEffectiveArea(float eta)
   if( fabs(eta) > 2.4 )         Aeff = 0.14; // +/- 0.004
 
   return Aeff;
+}
+
+float getMT2(TLorentzVector lep0, TLorentzVector lep1, float met_Et, float met_Phi) {
+    double pa[3];
+    double pb[3];
+    double pmiss[3];
+
+    TLorentzVector pmet;
+    pmet.SetPtEtaPhiM(met_Et, 0., met_Phi, 0.);
+    pmiss[0] = 0.; // not required
+    pmiss[1] = pmet.Px();
+    pmiss[2] = pmet.Py();
+
+    pa[0] = 0.;
+    pa[1] = lep0.Px();
+    pa[2] = lep0.Py();
+
+    pb[0] = 0.;
+    pb[1] = lep1.Px();
+    pb[2] = lep1.Py();
+
+    mt2bisect* MT2bisect = new mt2bisect();
+    MT2bisect->set_verbose(0);
+    MT2bisect->set_momenta(pa, pb, pmiss);
+    MT2bisect->set_mn(0.); // test mass
+    double mt2 = MT2bisect->get_mt2();
+    delete MT2bisect;
+    return mt2;
 }

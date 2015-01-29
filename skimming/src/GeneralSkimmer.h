@@ -13,10 +13,14 @@
 #include <TFile.h>
 #include <TSelector.h>
 #include <TLorentzVector.h>
+#include <TH2.h>
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
 #include <iostream>
+
+// mt2bisect class
+#include "mt2bisect.h"
 
 struct EventInfo{
     int runNumber;
@@ -27,7 +31,14 @@ struct EventInfo{
 
 struct EventData{
     int channel;
+    int nJets;
+    int nBJets;
+    float dilMass;
+    float htJets;
 };
+
+// declare getMT2 function
+float getMT2(TLorentzVector lept0, TLorentzVector lept2, float met_Et, float met_Phi);
 
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -36,9 +47,9 @@ class GeneralSkimmer : public TSelector {
 
 protected:
    EventData      _eventData;
-   EventData      _genData;
    TTree          *skimTree;
-   TTree          *genTree;
+   TH2I           *h_gen_ch_all;
+   TH2I           *h_gen_ch_acc;
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
@@ -627,6 +638,9 @@ public :
    virtual TList  *GetOutputList() const { return fOutput; }
    virtual void    SlaveTerminate();
    virtual void    Terminate();
+
+   // additional member functions
+   // int getNumberLeptAcc(std::vector<double> lept_pt, std::vector<double> lept_eta);
 
    ClassDef(GeneralSkimmer,0);
 };

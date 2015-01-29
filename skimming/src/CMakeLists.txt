@@ -3,10 +3,10 @@
 root_generate_dictionary("GeneralSkimmer.h" "" "GeneralSkimmerDict.cxx" ${CMAKE_CURRENT_SOURCE_DIR} )
 
 # Specify .cpp files
-set(SRC GeneralSkimmer.cpp one_ntuple.cpp GeneralSkimmerDict.cxx)
+set(SRC GeneralSkimmer.cpp mt2_bisect.cpp one_ntuple.cpp GeneralSkimmerDict.cxx)
 
 # Set headers
-set(HEADERS GeneralSkimmer.h)
+set(HEADERS GeneralSkimmer.h mt2_bisect.h)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # Specify executable
