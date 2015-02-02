@@ -231,6 +231,8 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
 
     // dilepton invariant mass
     _eventData.dilMass = (vLept[0]+vLept[1]).M();
+    // tranverse energy
+    _eventData.met_Et = T_METPFTypeI_ET; 
 
     // Jet Selection
     int nJet= T_JetAKCHS_Et->size();
@@ -239,9 +241,10 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     for ( int i = 0 ; i < nJet; i++) {
         if (T_JetAKCHS_Et->at(i) > 30 &&
             fabs(T_JetAKCHS_Eta->at(i)) < 2.4 ) {
+            // add energy to ht
             _eventData.htJets += T_JetAKCHS_Et->at(i);
             _eventData.nJets++;
-            // check if bjet
+            // check if bjet ( CSV medium working point)
             bool isBJet = T_JetAKCHS_Tag_CombSVtx->at(i) > 0.679;
             if (isBJet) _eventData.nBJets++;
             // keep only two higher pt jets
@@ -252,10 +255,25 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
             } // end only saving two jets 
         } // end good jet loop
     } // end jet loop
-    
-    if (_eventData.channel >= 0) {
-        skimTree->Fill();
+   
+    // basic selection for ee and mumu channels 
+    if ( (_eventData.channel == 0 || _eventData.channel == 1 ) && 
+         (_eventData.dilMass > 20) && isOppSign &&
+         (_eventData.met_Et > 40) &&
+         (_eventData.dilMass < 76 || _eventData.dilMass > 106) &&
+         (_eventData.nJets > 1) && (_eventData.nBJets > 0)
+       ) {
+      skimTree->Fill();
     }
+
+    // basic selection for emu and mue channel
+    if ( (_eventData.channel == 2) &&
+         (_eventData.dilMass > 20) && isOppSign &&
+         (_eventData.nJets > 1) && (_eventData.nBJets > 0)
+       ) {
+      skimTree->Fill();
+    }
+         
     return kTRUE;
 }
 
@@ -305,6 +323,9 @@ Double_t GetEffectiveArea(float eta)
   return Aeff;
 }
 
+//-----------------------------------------------------------------------------
+// MT2 calculation by mt2bisect.h
+//-----------------------------------------------------------------------------
 float getMT2(TLorentzVector lep0, TLorentzVector lep1, float met_Et, float met_Phi) {
     double pa[3];
     double pb[3];
