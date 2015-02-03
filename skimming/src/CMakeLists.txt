@@ -1,9 +1,10 @@
 
 # Create ROOT dictionary
 root_generate_dictionary("GeneralSkimmer.h" "" "GeneralSkimmerDict.cxx" ${CMAKE_CURRENT_SOURCE_DIR} )
+root_generate_dictionary("EventData.h" "" "EventDataDict.cxx" ${CMAKE_CURRENT_SOURCE_DIR} )
 
 # Specify .cpp files
-set(SRC GeneralSkimmer.cpp mt2_bisect.cpp process_tchain.cpp GeneralSkimmerDict.cxx)
+set(SRC GeneralSkimmer.cpp mt2_bisect.cpp process_tchain.cpp GeneralSkimmerDict.cxx EventDataDict.cxx)
 
 # Set headers
 set(HEADERS GeneralSkimmer.h mt2bisect.h)

@@ -18,7 +18,9 @@
 // Header file for the classes stored in the TTree if any.
 #include <vector>
 #include <iostream>
+#include <string>
 
+#include "EventData.h"
 // mt2bisect class
 #include "mt2bisect.h"
 
@@ -27,15 +29,6 @@ struct EventInfo{
     int lumiBlock;
     int eventNumber;
     int processID;
-};
-
-struct EventData{
-    int channel;
-    int nJets;
-    int nBJets;
-    float dilMass;
-    float met_Et;
-    float htJets;
 };
 
 // declare getMT2 function
@@ -47,10 +40,12 @@ float getMT2(TLorentzVector lept0, TLorentzVector lept2, float met_Et, float met
 class GeneralSkimmer : public TSelector {
 
 protected:
-   EventData      _eventData;
+   EventData      *_eventData;
    TTree          *skimTree;
    TH2I           *h_gen_ch_all;
    TH2I           *h_gen_ch_acc;
+
+   std::string     o_filename; // output file name
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
@@ -624,7 +619,7 @@ public :
    TBranch        *b_T_passTriggerDoubleEl;   //!
    TBranch        *b_T_passTriggerElMu;   //!
 
-   GeneralSkimmer(TTree * /*tree*/ =0) : fChain(0), skimTree(0) { }
+   GeneralSkimmer(TTree * /*tree*/ =0) : fChain(0), skimTree(0), _eventData(0) { }
    virtual ~GeneralSkimmer() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);

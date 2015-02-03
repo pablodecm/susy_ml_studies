@@ -11,23 +11,25 @@
 
 
 
-void processTChain( std::vector<TString> filenames, long n_events ); 
+void processTChain( std::vector<TString> filenames, TString option, long n_events ); 
 
 int main(int argc, char * argv[])
 {
     // default values
     std::vector<TString> filenames;
     long n_events = LONG_MAX ;
+    TString option = "";
 
     int c;
     while(1) {
       static struct option long_options[] = {
         {"input", required_argument, 0, 'i'},
-        {"n_events", required_argument, 0, 'e'}
+        {"n_events", required_argument, 0, 'e'},
+        {"output", required_argument, 0, 'o'}
       };
 
       int option_index = 0;
-      c = getopt_long (argc, argv, "i:e:h",long_options, &option_index); 
+      c = getopt_long (argc, argv, "i:e:o:h",long_options, &option_index); 
 
       // Detect the end of the options
       if (c == -1)  break;
@@ -40,6 +42,9 @@ int main(int argc, char * argv[])
         case 'e':
           n_events = atoi(optarg);
           break;
+        case 'o':
+          option += "ofile="+TString(optarg) + ";"; 
+          break;
         case 'h': // Intentional fall-through
         case '?':
           return 0;  
@@ -50,12 +55,12 @@ int main(int argc, char * argv[])
     }
 
 
-    processTChain( filenames, n_events);
+    processTChain( filenames, option, n_events);
     return 0;
 }
 
 
-void processTChain( std::vector<TString> filenames, long n_events ) {
+void processTChain( std::vector<TString> filenames, TString option,  long n_events ) {
 
   // create selector instance
   GeneralSkimmer * selector = new GeneralSkimmer();
@@ -67,7 +72,7 @@ void processTChain( std::vector<TString> filenames, long n_events ) {
   } 
 
   // process TChain
-  tchain->Process(selector, "", n_events);
+  tchain->Process(selector, option , n_events);
 
 } 
 
