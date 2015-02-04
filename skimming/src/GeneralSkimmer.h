@@ -20,16 +20,15 @@
 #include <iostream>
 #include <string>
 
+// container classes for skimmed TTree
 #include "EventData.h"
+#include "EventTopology.h"
+#include "EventRecObjects.h"
+#include "EventGenObjects.h" 
+#include "EventHighLevel.h"
+
 // mt2bisect class
 #include "mt2bisect.h"
-
-struct EventInfo{
-    int runNumber;
-    int lumiBlock;
-    int eventNumber;
-    int processID;
-};
 
 // declare getMT2 function
 float getMT2(TLorentzVector lept0, TLorentzVector lept2, float met_Et, float met_Phi);
@@ -40,10 +39,14 @@ float getMT2(TLorentzVector lept0, TLorentzVector lept2, float met_Et, float met
 class GeneralSkimmer : public TSelector {
 
 protected:
-   EventData      *_eventData;
-   TTree          *skimTree;
-   TH2I           *h_gen_ch_all;
-   TH2I           *h_gen_ch_acc;
+   EventData          *_ev_data;
+   EventTopology      *_ev_topo;
+   EventRecObjects    *_ev_reco;
+   EventGenObjects    *_ev_geno;
+   EventHighLevel     *_ev_high;
+   TTree              *_skimTree;
+   TH2I               *h_gen_ch_all;
+   TH2I               *h_gen_ch_acc;
 
    std::string     o_filename; // output file name
 public :
@@ -619,7 +622,16 @@ public :
    TBranch        *b_T_passTriggerDoubleEl;   //!
    TBranch        *b_T_passTriggerElMu;   //!
 
-   GeneralSkimmer(TTree * /*tree*/ =0) : fChain(0), skimTree(0), _eventData(0) { }
+   // default constructor
+   GeneralSkimmer(TTree * /*tree*/ =0) : 
+     fChain(0),
+     _skimTree(0),
+     _ev_data(0),
+     _ev_topo(0),
+     _ev_reco(0),
+     _ev_geno(0),
+     _ev_high(0) { }
+
    virtual ~GeneralSkimmer() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);

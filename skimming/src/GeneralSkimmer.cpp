@@ -64,11 +64,19 @@ void GeneralSkimmer::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
 
-   skimTree = new TTree("skimTree", "Skimmed TTree for output");
+   _skimTree = new TTree("skimTree", "Skimmed TTree for output");
    
-   _eventData = new EventData;
-   skimTree->Branch("eventData",&_eventData, 8000, 1);
-   fOutput->Add(skimTree);
+   _ev_data = new EventData();
+   _ev_topo = new EventTopology();
+   _ev_reco = new EventRecObjects();
+   _ev_geno = new EventGenObjects();
+   _ev_high = new EventHighLevel();
+   _skimTree->Branch("eventData",&_ev_data, 8000, 1);
+   _skimTree->Branch("eventTopology",&_ev_topo, 8000, 1);
+   _skimTree->Branch("eventRecObjects",&_ev_reco, 8000, 1);
+   _skimTree->Branch("eventGenObjects",&_ev_geno, 8000, 1);
+   _skimTree->Branch("eventHighLevel",&_ev_high, 8000, 1);
+   fOutput->Add(_skimTree);
 
    h_gen_ch_all = new TH2I("h_gen_ch_all","Events per channel (generation level - no acceptance cuts)",
            3, 0.0, 3.0,3,0.0,3.0);
@@ -220,20 +228,20 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     int nGoodElec = vElec.size();
     int nGoodMuon = vMuon.size();
     bool isOppSign = false;
-    _eventData->channel = -1;
+    _ev_topo->channel = -1;
     std::vector <TLorentzVector> vLept;
     if(nGoodElec == 2 && nGoodMuon == 0) {
-        _eventData->channel = 0; // ee channel
+        _ev_topo->channel = 0; // ee channel
         vLept.push_back(vElec[0]);
         vLept.push_back(vElec[1]);
         if (cElec[0]*cElec[1] < 0) isOppSign =  true;
     } else if (nGoodElec == 0 && nGoodMuon == 2 ) {
-        _eventData->channel = 1; // mumu channel
+        _ev_topo->channel = 1; // mumu channel
         vLept.push_back(vMuon[0]);
         vLept.push_back(vMuon[1]);
         if (cMuon[0]*cMuon[1] < 0) isOppSign =  true;
     } else if (nGoodElec == 1 && nGoodMuon == 1 ) {
-        _eventData->channel = 2; // emu+mue channel
+        _ev_topo->channel = 2; // emu+mue channel
         if (vElec[0].Pt() > vMuon[0].Pt() ) {
             vLept.push_back(vElec[0]);
             vLept.push_back(vMuon[0]);
@@ -248,25 +256,25 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     }
 
     // dilepton invariant mass
-    _eventData->dilMass = (vLept[0]+vLept[1]).M();
+    _ev_high->dilept_inv_mass = (vLept[0]+vLept[1]).M();
     // tranverse energy
-    _eventData->met_Et = T_METPFTypeI_ET; 
+    _ev_reco->pfmet_Et = T_METPFTypeI_ET; 
 
     // Jet Selection
     int nJet= T_JetAKCHS_Et->size();
     std::vector <TLorentzVector> vJet;
-    _eventData->nJets = 0;
-    _eventData->nBJets = 0;
-    _eventData->htJets = 0;
+    _ev_topo->n_jet = 0;
+    _ev_topo->n_b_jet = 0;
+    _ev_high->jets_ht = 0;
     for ( int i = 0 ; i < nJet; i++) {
         if (T_JetAKCHS_Et->at(i) > 30 &&
             fabs(T_JetAKCHS_Eta->at(i)) < 2.4 ) {
             // add energy to ht
-            _eventData->htJets += T_JetAKCHS_Et->at(i);
-            _eventData->nJets++;
+            _ev_high->jets_ht += T_JetAKCHS_Et->at(i);
+            _ev_topo->n_jet++;
             // check if bjet ( CSV medium working point)
             bool isBJet = T_JetAKCHS_Tag_CombSVtx->at(i) > 0.679;
-            if (isBJet) _eventData->nBJets++;
+            if (isBJet) _ev_topo->n_b_jet++;
             // keep only two higher pt jets
             while(vJet.size() < 3) {
               TLorentzVector gJet( T_JetAKCHS_Px->at(i), T_JetAKCHS_Py->at(i),
@@ -277,21 +285,21 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     } // end jet loop
    
     // basic selection for ee and mumu channels 
-    if ( (_eventData->channel == 0 || _eventData->channel == 1 ) && 
-         (_eventData->dilMass > 20) && isOppSign &&
-         (_eventData->met_Et > 40) &&
-         (_eventData->dilMass < 76 || _eventData->dilMass > 106) &&
-         (_eventData->nJets > 1) && (_eventData->nBJets > 0)
+    if ( (_ev_topo->channel == 0 || _ev_topo->channel == 1 ) && 
+         (_ev_high->dilept_inv_mass > 20) && isOppSign &&
+         (_ev_reco->pfmet_Et > 40) &&
+         (_ev_high->dilept_inv_mass < 76 || _ev_high->dilept_inv_mass > 106) &&
+         (_ev_topo->n_jet > 1) && (_ev_topo->n_b_jet > 0)
        ) {
-      skimTree->Fill();
+      _skimTree->Fill();
     }
 
     // basic selection for emu and mue channel
-    if ( (_eventData->channel == 2) &&
-         (_eventData->dilMass > 20) && isOppSign &&
-         (_eventData->nJets > 1) && (_eventData->nBJets > 0)
+    if ( (_ev_topo->channel == 2) &&
+         (_ev_high->dilept_inv_mass > 20) && isOppSign &&
+         (_ev_topo->n_jet > 1) && (_ev_topo->n_b_jet > 0)
        ) {
-      skimTree->Fill();
+      _skimTree->Fill();
     }
          
     return kTRUE;
