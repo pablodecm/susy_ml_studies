@@ -42,8 +42,6 @@ void GeneralSkimmer::Begin(TTree * /*tree*/)
 
     std::string option = GetOption();
 
-    std::cout << "Process options:" << option << std::endl;
-   
     std::size_t i_ofile = option.find("ofile="); 
     if (i_ofile != std::string::npos) {
       std::size_t length = (option.find(";", i_ofile) -  option.find("=", i_ofile) - 1);
@@ -120,10 +118,27 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
    //
    // The return value is currently not used.
 
-    int eSize = fChain->GetTree()->GetEntry(entry);
+    long eSize = fChain->GetTree()->GetEntry(entry);
     if(entry % 50000 == 0){
     std::cout << "Events processed: " << entry << std::endl;
     std::cout << " - event size is: " << eSize << " bytes" << std::endl;
+    }
+
+    // store event metadata
+    _ev_data->run_number = T_Event_RunNumber;
+    _ev_data->lumi_block = T_Event_LuminosityBlock;
+    _ev_data->event_number = T_Event_EventNumber;
+    _ev_data->process_ID = T_Event_processID;
+
+    // store SUSY generation level  masses
+    if (T_Gen_StopMass->size() > 0) {
+      _ev_geno->gen_stop_mass = T_Gen_StopMass->at(0);
+    }
+    if (T_Gen_Chi0Mass->size() > 0) {
+      _ev_geno->gen_chi0_mass = T_Gen_Chi0Mass->at(0);
+    }
+    if (T_Gen_CharginoMass->size() > 0) {
+      _ev_geno->gen_chargino_mass = T_Gen_CharginoMass->at(0);
     }
 
     // Electron Selection
@@ -225,22 +240,23 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     // int nAccTau = T_Gen_TauSt3_energy->size();
 
     // obtain channel and selected leptons  (veto any event with additional leptons)
-    int nGoodElec = vElec.size();
-    int nGoodMuon = vMuon.size();
+    _ev_topo->n_elec = vElec.size();
+    _ev_topo->n_muon = vMuon.size();
+    _ev_topo->n_lept = _ev_topo->n_elec + _ev_topo->n_lept;
     bool isOppSign = false;
     _ev_topo->channel = -1;
     std::vector <TLorentzVector> vLept;
-    if(nGoodElec == 2 && nGoodMuon == 0) {
+    if(_ev_topo->n_elec == 2 && _ev_topo->n_muon == 0) {
         _ev_topo->channel = 0; // ee channel
         vLept.push_back(vElec[0]);
         vLept.push_back(vElec[1]);
         if (cElec[0]*cElec[1] < 0) isOppSign =  true;
-    } else if (nGoodElec == 0 && nGoodMuon == 2 ) {
+    } else if (_ev_topo->n_elec == 0 && _ev_topo->n_muon == 2 ) {
         _ev_topo->channel = 1; // mumu channel
         vLept.push_back(vMuon[0]);
         vLept.push_back(vMuon[1]);
         if (cMuon[0]*cMuon[1] < 0) isOppSign =  true;
-    } else if (nGoodElec == 1 && nGoodMuon == 1 ) {
+    } else if (_ev_topo->n_elec == 1 && _ev_topo->n_muon == 1 ) {
         _ev_topo->channel = 2; // emu+mue channel
         if (vElec[0].Pt() > vMuon[0].Pt() ) {
             vLept.push_back(vElec[0]);

@@ -20,7 +20,7 @@ void EventRecObjects::SetLeadingJet( const TLorentzVector& jet_1, float jet_1_CS
   jet_1_Et = jet_1.Et();
   jet_1_Eta = jet_1.Eta();
   jet_1_Phi = jet_1.Phi();
-  jet_1_CSV = jet_1_CSV;
+  this->jet_1_CSV = jet_1_CSV;
 }
 
 void EventRecObjects::SetTrailingJet( const TLorentzVector& jet_2, float jet_2_CSV ) {
@@ -28,7 +28,7 @@ void EventRecObjects::SetTrailingJet( const TLorentzVector& jet_2, float jet_2_C
   jet_2_Et = jet_2.Et();
   jet_2_Eta = jet_2.Eta();
   jet_2_Phi = jet_2.Phi();
-  jet_2_CSV = jet_2_CSV;
+  this->jet_2_CSV = jet_2_CSV;
 }
 
 

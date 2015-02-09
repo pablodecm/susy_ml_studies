@@ -8,7 +8,6 @@ class EventHighLevel {
   public:
     float dilept_inv_mass;
     float dilepton_MT2;
-    float dijet_MT2;
     float jets_ht;
 
     EventHighLevel() {}

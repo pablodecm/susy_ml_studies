@@ -36,7 +36,6 @@ int main(int argc, char * argv[])
 
       switch(c) {
         case 'i':
-          std::cout << "-i argument" << optarg << std::endl;
           filenames.push_back(TString(optarg));
           break;
         case 'e':
@@ -62,14 +61,24 @@ int main(int argc, char * argv[])
 
 void processTChain( std::vector<TString> filenames, TString option,  long n_events ) {
 
-  // create selector instance
-  GeneralSkimmer * selector = new GeneralSkimmer();
-
+  
   // create TChain and add all filenames 
   TChain * tchain = new TChain("Tree");
   for ( std::size_t i = 0; i < filenames.size(); i++ ) {
-    tchain->Add( filenames[i] );
-  } 
+    std::cout << " Adding file: " << filenames[i];
+    // -1 option so file is checked (return 1 if file is correct or 0 otherwise)
+    if (tchain->Add( filenames[i], -1 ) == 0) {
+      std::cout << "\033[1;31m not found \033[0m\n" << std::endl; 
+    } else {
+      std::cout << "\033[1;32m found \033[0m\n" << std::endl; 
+    } 
+  }
+  // get total number of entries in the chain
+  long int nentries = tchain->GetEntries();
+  std::cout << " Total number of entries in TChain is: " << nentries << std::endl;
+
+  // create selector instance
+  GeneralSkimmer * selector = new GeneralSkimmer();
 
   // process TChain
   tchain->Process(selector, option , n_events);
