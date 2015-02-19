@@ -242,7 +242,7 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     // obtain channel and selected leptons  (veto any event with additional leptons)
     _ev_topo->n_elec = vElec.size();
     _ev_topo->n_muon = vMuon.size();
-    _ev_topo->n_lept = _ev_topo->n_elec + _ev_topo->n_lept;
+    _ev_topo->n_lept = _ev_topo->n_elec + _ev_topo->n_muon;
     bool isOppSign = false;
     _ev_topo->channel = -1;
     std::vector <TLorentzVector> vLept;
