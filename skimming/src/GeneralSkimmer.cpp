@@ -62,9 +62,12 @@ void GeneralSkimmer::SlaveBegin(TTree * /*tree*/)
 
    TString option = GetOption();
 
+
+    std::cout << "Creating TTree: " << std::endl;
    _skimTree = new TTree("skimTree", "Skimmed TTree for output");
+    std::cout << "tree created "  << std::endl;
    
-   _ev_data = new EventData();
+    _ev_data = new EventData();
    _ev_topo = new EventTopology();
    _ev_reco = new EventRecObjects();
    _ev_geno = new EventGenObjects();
@@ -163,16 +166,16 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
         // relative electron isolation
         double elecRelIso = (T_Elec_chargedHadronIso->at(i) + std::max(0.0,
                     T_Elec_neutralHadronIso->at(i) + T_Elec_photonIso->at(i)
-                    - (T_Event_RhoIso * GetEffectiveArea( T_Elec_SC_Eta->at(i)))))/ T_Elec_Pt->at(i);
+                    - (T_Event_Rho * GetEffectiveArea( T_Elec_SC_Eta->at(i)))))/ T_Elec_Pt->at(i);
 
         if(gCuts &&
-           T_Elec_simpleEleId80->at(i) &&
+           // T_Elec_MVAoutput->at(i) && // need to check working point
            T_Elec_passConversionVeto->at(i) &&
-           T_Elec_isPF->at(i) &&
+           // T_Elec_isPF->at(i) &&
            (T_Elec_isEB->at(i) || T_Elec_isEE->at(i)) &&
            fabs( (1-T_Elec_eSuperClusterOverP->at(i))/T_Elec_ecalEnergy->at(i)) < 0.05   &&
            (fabs(T_Elec_SC_Eta->at(i) ) < 1.4442 || fabs(T_Elec_SC_Eta->at(i)) > 1.566 ) &&
-           fabs( T_Elec_Pt->at(i) - T_Elec_PFElecPt->at(i) ) < 10. &&
+           // fabs( T_Elec_Pt->at(i) - T_Elec_PFElecPt->at(i) ) < 10. &&
            fabs( T_Elec_IPwrtPV->at(i) ) <  0.02 &&
            fabs( T_Elec_dzwrtPV->at(i) ) <  0.1  &&
            elecRelIso <= 0.15 &&
@@ -202,7 +205,7 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
 
         if(T_Muon_IsGlobalMuon->at(i) &&
            T_Muon_IsGMPTMuons->at(i) &&
-           T_Muon_isPFMuon->at(i) &&
+           // T_Muon_isPFMuon->at(i) && // are not PF all of them?
            T_Muon_NormChi2GTrk->at(i) < 10 &&  // not in FRs code ( normalized is important!)
            T_Muon_NValidHitsInTrk->at(i) > 0 &&  // not in FRs code
            T_Muon_NumOfMatchedStations->at(i) > 1 &&
@@ -212,8 +215,8 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
            T_Muon_NValidPixelHitsInTrk->at(i) > 0 &&
            muonRelIso <=  0.15  &&
            T_Muon_Pt->at(i) >= 10. &&
-           fabs(T_Muon_Eta->at(i)) <=  2.4  &&
-           fabs( T_Muon_Pt->at(i) - T_Muon_PFMuonPt->at(i) ) < 5.
+           fabs(T_Muon_Eta->at(i)) <=  2.4 //  &&
+           // fabs( T_Muon_Pt->at(i) - T_Muon_PFMuonPt->at(i) ) < 5. // not avaliable PHYS14
            ) {
             TLorentzVector gMuon(T_Muon_Px->at(i), T_Muon_Py->at(i),
                                  T_Muon_Pz->at(i), T_Muon_Energy->at(i));
@@ -223,9 +226,9 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     } // end muon loop
 
     // get number of events at each channel at gen level (no acceptance cuts)
-    int nSt3Elec = T_Gen_ElecSt3_energy->size();
-    int nSt3Muon = T_Gen_MuonSt3_energy->size();
-    int nSt3Tau = T_Gen_TauSt3_energy->size();
+    int nSt3Elec = T_Gen_Elec_Energy->size();
+    int nSt3Muon = T_Gen_Muon_Energy->size();
+    int nSt3Tau = T_Gen_Tau_Energy->size();
     if(nSt3Elec == 2 && nSt3Muon == 0 && nSt3Tau == 0 ) {
         h_gen_ch_all->Fill("e","e",1);
     } else if (nSt3Elec == 0 && nSt3Muon == 2 && nSt3Tau == 0 ) {
@@ -235,9 +238,9 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     }
 
     // get number of events at each channel at gen level (with acceptance cuts)
-    // int nAccElec = T_Gen_ElecSt3_energy->size();
-    // int nAccMuon = T_Gen_MuonSt3_energy->size();
-    // int nAccTau = T_Gen_TauSt3_energy->size();
+    // int nAccElec = T_Gen_Elec_Energy->size();
+    // int nAccMuon = T_Gen_Muon_Energy->size();
+    // int nAccTau = T_Gen_Tau_Energy->size();
 
     // obtain channel and selected leptons  (veto any event with additional leptons)
     _ev_topo->n_elec = vElec.size();
@@ -286,14 +289,14 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
             _ev_high->jets_ht += T_JetAKCHS_Et->at(i);
             _ev_topo->n_jet++;
             // check if bjet ( CSV medium working point)
-            bool isBJet = T_JetAKCHS_Tag_CombSVtx->at(i) > 0.679;
+            bool isBJet = T_JetAKCHS_Tag_pfCombinedSVtx->at(i) > 0.679;
             if (isBJet) _ev_topo->n_b_jet++;
             // keep only two higher pt jets
             while(vJet.size() < 3) {
               TLorentzVector gJet( T_JetAKCHS_Px->at(i), T_JetAKCHS_Py->at(i),
                                    T_JetAKCHS_Pz->at(i), T_JetAKCHS_Energy->at(i));
               vJet.push_back(gJet);
-              vJet_CSV.push_back(T_JetAKCHS_Tag_CombSVtx->at(i));
+              vJet_CSV.push_back(T_JetAKCHS_Tag_pfCombinedSVtx->at(i));
             } // end only saving two jets 
         } // end good jet loop
     } // end jet loop
@@ -304,9 +307,10 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     _ev_reco->SetLeadingLepton(vLept[0]);
     _ev_reco->SetTrailingLepton(vLept[1]);
     // assign tranverse energy variables
-    _ev_reco->pfmet_Et = T_METPFTypeI_ET; 
-    _ev_reco->pfmet_Phi = T_METPFTypeI_Phi;
-    _ev_reco->pfmet_Sig = T_METPFTypeI_Sig;
+    _ev_reco->pfmet_Et = T_METPF_ET; 
+    _ev_reco->pfmet_Phi = T_METPF_Phi;
+    // MET sig not avaliable for PHYS14
+    _ev_reco->pfmet_Sig = -1; 
     // assign jets
     _ev_reco->SetLeadingJet(vJet[0], vJet_CSV[0]);
     _ev_reco->SetTrailingJet(vJet[1], vJet_CSV[1]);

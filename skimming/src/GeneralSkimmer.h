@@ -54,7 +54,7 @@ public :
 
    // Declaration of leaf types
    Float_t         T_Event_Rho;
-   Float_t         T_Event_RhoIso;
+//   Float_t         T_Event_RhoIso;
 //   Bool_t          T_EventF_EcalDeadCell;
 //   Bool_t          T_EventF_logErrorTooManyClusters;
 //   Bool_t          T_EventF_trackingFailure;
@@ -120,63 +120,63 @@ public :
 //   std::vector<int>     *T_Gen_MuonSt3_pdgId;
 //   std::vector<int>     *T_Gen_MuonSt3_firstMother;
 //   std::vector<int>     *T_Gen_MuonSt3_i;
-   std::vector<float>   *T_Gen_MuonSt3_energy;
+   std::vector<float>   *T_Gen_Muon_Energy;
 //   std::vector<float>   *T_Gen_MuonSt3_pt;
 //   std::vector<float>   *T_Gen_MuonSt3_eta;
 //   std::vector<float>   *T_Gen_MuonSt3_phi;
 //   std::vector<int>     *T_Gen_ElecSt3_pdgId;
 //   std::vector<int>     *T_Gen_ElecSt3_firstMother;
 //   std::vector<int>     *T_Gen_ElecSt3_i;
-   std::vector<float>   *T_Gen_ElecSt3_energy;
+   std::vector<float>   *T_Gen_Elec_Energy;
 //   std::vector<float>   *T_Gen_ElecSt3_pt;
 //   std::vector<float>   *T_Gen_ElecSt3_eta;
 //   std::vector<float>   *T_Gen_ElecSt3_phi;
 //   std::vector<int>     *T_Gen_TauSt3_pdgId;
 //   std::vector<int>     *T_Gen_TauSt3_firstMother;
 //   std::vector<int>     *T_Gen_TauSt3_i;
-   std::vector<float>   *T_Gen_TauSt3_energy;
+   std::vector<float>   *T_Gen_Tau_Energy;
 //   std::vector<float>   *T_Gen_TauSt3_pt;
 //   std::vector<float>   *T_Gen_TauSt3_eta;
 //   std::vector<float>   *T_Gen_TauSt3_phi;
 //   std::vector<int>     *T_Gen_StopSt3_pdgId;
 //   std::vector<int>     *T_Gen_StopSt3_firstMother;
 //   std::vector<int>     *T_Gen_StopSt3_i;
-//   std::vector<float>   *T_Gen_StopSt3_energy;
+//   std::vector<float>   *T_Gen_Stop_Energy;
 //   std::vector<float>   *T_Gen_StopSt3_pt;
 //   std::vector<float>   *T_Gen_StopSt3_eta;
 //   std::vector<float>   *T_Gen_StopSt3_phi;
 //   std::vector<int>     *T_Gen_Chi0St3_pdgId;
 //   std::vector<int>     *T_Gen_Chi0St3_firstMother;
 //   std::vector<int>     *T_Gen_Chi0St3_i;
-//   std::vector<float>   *T_Gen_Chi0St3_energy;
+//   std::vector<float>   *T_Gen_Chi0_Energy;
 //   std::vector<float>   *T_Gen_Chi0St3_pt;
 //   std::vector<float>   *T_Gen_Chi0St3_eta;
 //   std::vector<float>   *T_Gen_Chi0St3_phi;
 //   std::vector<int>     *T_Gen_ChiPMSt3_pdgId;
 //   std::vector<int>     *T_Gen_ChiPMSt3_firstMother;
 //   std::vector<int>     *T_Gen_ChiPMSt3_i;
-//   std::vector<float>   *T_Gen_ChiPMSt3_energy;
+//   std::vector<float>   *T_Gen_ChiPM_Energy;
 //   std::vector<float>   *T_Gen_ChiPMSt3_pt;
 //   std::vector<float>   *T_Gen_ChiPMSt3_eta;
 //   std::vector<float>   *T_Gen_ChiPMSt3_phi;
 //   std::vector<int>     *T_Gen_bSt3_pdgId;
 //   std::vector<int>     *T_Gen_bSt3_firstMother;
 //   std::vector<int>     *T_Gen_bSt3_i;
-//   std::vector<float>   *T_Gen_bSt3_energy;
+//   std::vector<float>   *T_Gen_b_Energy;
 //   std::vector<float>   *T_Gen_bSt3_pt;
 //   std::vector<float>   *T_Gen_bSt3_eta;
 //   std::vector<float>   *T_Gen_bSt3_phi;
 //   std::vector<int>     *T_Gen_tSt3_pdgId;
 //   std::vector<int>     *T_Gen_tSt3_firstMother;
 //   std::vector<int>     *T_Gen_tSt3_i;
-//   std::vector<float>   *T_Gen_tSt3_energy;
+//   std::vector<float>   *T_Gen_t_Energy;
 //   std::vector<float>   *T_Gen_tSt3_pt;
 //   std::vector<float>   *T_Gen_tSt3_eta;
 //   std::vector<float>   *T_Gen_tSt3_phi;
 //   std::vector<int>     *T_Gen_WSt3_pdgId;
 //   std::vector<int>     *T_Gen_WSt3_firstMother;
 //   std::vector<int>     *T_Gen_WSt3_i;
-//   std::vector<float>   *T_Gen_WSt3_energy;
+//   std::vector<float>   *T_Gen_W_Energy;
 //   std::vector<float>   *T_Gen_WSt3_pt;
 //   std::vector<float>   *T_Gen_WSt3_eta;
 //   std::vector<float>   *T_Gen_WSt3_phi;
@@ -224,12 +224,12 @@ public :
 //   std::vector<float>   *T_Muon_vy;
 //   std::vector<float>   *T_Muon_vx;
    std::vector<int>     *T_Muon_NumOfMatchedStations;
-   std::vector<float>   *T_Muon_PFMuonPt;
+//   std::vector<float>   *T_Muon_PFMuonPt;
 //   std::vector<float>   *T_Muon_PFMuonPx;
 //   std::vector<float>   *T_Muon_PFMuonPy;
 //   std::vector<float>   *T_Muon_PFMuonPz;
 //   std::vector<float>   *T_Muon_PFMuonE;
-   std::vector<bool>    *T_Muon_isPFMuon;
+//   std::vector<bool>    *T_Muon_isPFMuon;
    std::vector<int>     *T_Muon_NLayers;
    std::vector<float>   *T_Vertex_z;
 //   std::vector<float>   *T_Vertex_y;
@@ -259,7 +259,7 @@ public :
    std::vector<bool>    *T_Elec_isEB;
    std::vector<bool>    *T_Elec_isEE;
 //   std::vector<float>   *T_Elec_MVA;
-   std::vector<float>   *T_Elec_simpleEleId80;
+   std::vector<float>   *T_Elec_MVAoutput;
    std::vector<float>   *T_Elec_chargedHadronIso;
    std::vector<float>   *T_Elec_neutralHadronIso;
    std::vector<float>   *T_Elec_photonIso;
@@ -290,8 +290,8 @@ public :
    std::vector<float>   *T_JetAKCHS_Eta;
    std::vector<float>   *T_JetAKCHS_Energy;
 //   std::vector<float>   *T_JetAKCHS_Tag_HighEffTC;
-   std::vector<float>   *T_JetAKCHS_Tag_CombSVtx;
-//   std::vector<float>   *T_JetAKCHS_Tag_CombSVtxMVA;
+   std::vector<float>   *T_JetAKCHS_Tag_pfCombinedSVtx;
+//   std::vector<float>   *T_JetAKCHS_Tag_pfCombinedSVtxMVA;
 //   std::vector<float>   *T_JetAKCHS_Tag_TauJet;
 //   std::vector<float>   *T_JetAKCHS_Tag_ImpParMVA;
 //   std::vector<float>   *T_JetAKCHS_Tag_JetBProb;
@@ -328,9 +328,9 @@ public :
 //   Float_t         T_METPF_ET;
 //   Float_t         T_METPF_Phi;
 //   Float_t         T_METPF_Sig;
-   Float_t         T_METPFTypeI_ET;
-   Float_t         T_METPFTypeI_Phi;
-   Float_t         T_METPFTypeI_Sig;
+   Float_t         T_METPF_ET;
+   Float_t         T_METPF_Phi;
+//   Float_t         T_METPF_Sig;
 //   Float_t         T_METgen_ET;
 //   Float_t         T_METgen_Phi;
 //   Bool_t          T_passTriggerDoubleMu;
@@ -339,7 +339,7 @@ public :
 
    // List of branches
    TBranch        *b_T_Event_Rho;   //!
-   TBranch        *b_T_Event_RhoIso;   //!
+//   TBranch        *b_T_Event_RhoIso;   //!
 //   TBranch        *b_T_EventF_EcalDeadCell;   //!
 //   TBranch        *b_T_EventF_logErrorTooManyClusters;   //!
 //   TBranch        *b_T_EventF_trackingFailure;   //!
@@ -405,63 +405,63 @@ public :
 //   TBranch        *b_T_Gen_MuonSt3_pdgId;   //!
 //   TBranch        *b_T_Gen_MuonSt3_firstMother;   //!
 //   TBranch        *b_T_Gen_MuonSt3_i;   //!
-   TBranch        *b_T_Gen_MuonSt3_energy;   //!
+   TBranch        *b_T_Gen_Muon_Energy;   //!
 //   TBranch        *b_T_Gen_MuonSt3_pt;   //!
 //   TBranch        *b_T_Gen_MuonSt3_eta;   //!
 //   TBranch        *b_T_Gen_MuonSt3_phi;   //!
 //   TBranch        *b_T_Gen_ElecSt3_pdgId;   //!
 //   TBranch        *b_T_Gen_ElecSt3_firstMother;   //!
 //   TBranch        *b_T_Gen_ElecSt3_i;   //!
-   TBranch        *b_T_Gen_ElecSt3_energy;   //!
+   TBranch        *b_T_Gen_Elec_Energy;   //!
 //   TBranch        *b_T_Gen_ElecSt3_pt;   //!
 //   TBranch        *b_T_Gen_ElecSt3_eta;   //!
 //   TBranch        *b_T_Gen_ElecSt3_phi;   //!
 //   TBranch        *b_T_Gen_TauSt3_pdgId;   //!
 //   TBranch        *b_T_Gen_TauSt3_firstMother;   //!
 //   TBranch        *b_T_Gen_TauSt3_i;   //!
-   TBranch        *b_T_Gen_TauSt3_energy;   //!
+   TBranch        *b_T_Gen_Tau_Energy;   //!
 //   TBranch        *b_T_Gen_TauSt3_pt;   //!
 //   TBranch        *b_T_Gen_TauSt3_eta;   //!
 //   TBranch        *b_T_Gen_TauSt3_phi;   //!
 //   TBranch        *b_T_Gen_StopSt3_pdgId;   //!
 //   TBranch        *b_T_Gen_StopSt3_firstMother;   //!
 //   TBranch        *b_T_Gen_StopSt3_i;   //!
-//   TBranch        *b_T_Gen_StopSt3_energy;   //!
+//   TBranch        *b_T_Gen_Stop_Energy;   //!
 //   TBranch        *b_T_Gen_StopSt3_pt;   //!
 //   TBranch        *b_T_Gen_StopSt3_eta;   //!
 //   TBranch        *b_T_Gen_StopSt3_phi;   //!
 //   TBranch        *b_T_Gen_Chi0St3_pdgId;   //!
 //   TBranch        *b_T_Gen_Chi0St3_firstMother;   //!
 //   TBranch        *b_T_Gen_Chi0St3_i;   //!
-//   TBranch        *b_T_Gen_Chi0St3_energy;   //!
+//   TBranch        *b_T_Gen_Chi0_Energy;   //!
 //   TBranch        *b_T_Gen_Chi0St3_pt;   //!
 //   TBranch        *b_T_Gen_Chi0St3_eta;   //!
 //   TBranch        *b_T_Gen_Chi0St3_phi;   //!
 //   TBranch        *b_T_Gen_ChiPMSt3_pdgId;   //!
 //   TBranch        *b_T_Gen_ChiPMSt3_firstMother;   //!
 //   TBranch        *b_T_Gen_ChiPMSt3_i;   //!
-//   TBranch        *b_T_Gen_ChiPMSt3_energy;   //!
+//   TBranch        *b_T_Gen_ChiPM_Energy;   //!
 //   TBranch        *b_T_Gen_ChiPMSt3_pt;   //!
 //   TBranch        *b_T_Gen_ChiPMSt3_eta;   //!
 //   TBranch        *b_T_Gen_ChiPMSt3_phi;   //!
 //   TBranch        *b_T_Gen_bSt3_pdgId;   //!
 //   TBranch        *b_T_Gen_bSt3_firstMother;   //!
 //   TBranch        *b_T_Gen_bSt3_i;   //!
-//   TBranch        *b_T_Gen_bSt3_energy;   //!
+//   TBranch        *b_T_Gen_b_Energy;   //!
 //   TBranch        *b_T_Gen_bSt3_pt;   //!
 //   TBranch        *b_T_Gen_bSt3_eta;   //!
 //   TBranch        *b_T_Gen_bSt3_phi;   //!
 //   TBranch        *b_T_Gen_tSt3_pdgId;   //!
 //   TBranch        *b_T_Gen_tSt3_firstMother;   //!
 //   TBranch        *b_T_Gen_tSt3_i;   //!
-//   TBranch        *b_T_Gen_tSt3_energy;   //!
+//   TBranch        *b_T_Gen_t_Energy;   //!
 //   TBranch        *b_T_Gen_tSt3_pt;   //!
 //   TBranch        *b_T_Gen_tSt3_eta;   //!
 //   TBranch        *b_T_Gen_tSt3_phi;   //!
 //   TBranch        *b_T_Gen_WSt3_pdgId;   //!
 //   TBranch        *b_T_Gen_WSt3_firstMother;   //!
 //   TBranch        *b_T_Gen_WSt3_i;   //!
-//   TBranch        *b_T_Gen_WSt3_energy;   //!
+//   TBranch        *b_T_Gen_W_Energy;   //!
 //   TBranch        *b_T_Gen_WSt3_pt;   //!
 //   TBranch        *b_T_Gen_WSt3_eta;   //!
 //   TBranch        *b_T_Gen_WSt3_phi;   //!
@@ -509,12 +509,12 @@ public :
 //   TBranch        *b_T_Muon_vy;   //!
 //   TBranch        *b_T_Muon_vx;   //!
    TBranch        *b_T_Muon_NumOfMatchedStations;   //!
-   TBranch        *b_T_Muon_PFMuonPt;   //!
+//   TBranch        *b_T_Muon_PFMuonPt;   //!
 //   TBranch        *b_T_Muon_PFMuonPx;   //!
 //   TBranch        *b_T_Muon_PFMuonPy;   //!
 //   TBranch        *b_T_Muon_PFMuonPz;   //!
 //   TBranch        *b_T_Muon_PFMuonE;   //!
-   TBranch        *b_T_Muon_isPFMuon;   //!
+//   TBranch        *b_T_Muon_isPFMuon;   //!
    TBranch        *b_T_Muon_NLayers;   //!
    TBranch        *b_T_Vertex_z;   //!
 //   TBranch        *b_T_Vertex_y;   //!
@@ -544,7 +544,7 @@ public :
    TBranch        *b_T_Elec_isEB;   //!
    TBranch        *b_T_Elec_isEE;   //!
 //   TBranch        *b_T_Elec_MVA;   //!
-   TBranch        *b_T_Elec_simpleEleId80;   //!
+   TBranch        *b_T_Elec_MVAoutput;   //!
    TBranch        *b_T_Elec_chargedHadronIso;   //!
    TBranch        *b_T_Elec_neutralHadronIso;   //!
    TBranch        *b_T_Elec_photonIso;   //!
@@ -575,8 +575,8 @@ public :
    TBranch        *b_T_JetAKCHS_Eta;   //!
    TBranch        *b_T_JetAKCHS_Energy;   //!
 //   TBranch        *b_T_JetAKCHS_Tag_HighEffTC;   //!
-   TBranch        *b_T_JetAKCHS_Tag_CombSVtx;   //!
-//   TBranch        *b_T_JetAKCHS_Tag_CombSVtxMVA;   //!
+   TBranch        *b_T_JetAKCHS_Tag_pfCombinedSVtx;   //!
+//   TBranch        *b_T_JetAKCHS_Tag_pfCombinedSVtxMVA;   //!
 //   TBranch        *b_T_JetAKCHS_Tag_TauJet;   //!
 //   TBranch        *b_T_JetAKCHS_Tag_ImpParMVA;   //!
 //   TBranch        *b_T_JetAKCHS_Tag_JetBProb;   //!
@@ -613,9 +613,9 @@ public :
 //   TBranch        *b_T_METPF_ET;   //!
 //   TBranch        *b_T_METPF_Phi;   //!
 //   TBranch        *b_T_METPF_Sig;   //!
-   TBranch        *b_T_METPFTypeI_ET;   //!
-   TBranch        *b_T_METPFTypeI_Phi;   //!
-   TBranch        *b_T_METPFTypeI_Sig;   //!
+   TBranch        *b_T_METPF_ET;   //!
+   TBranch        *b_T_METPF_Phi;   //!
+//   TBranch        *b_T_METPF_Sig;   //!
 //   TBranch        *b_T_METgen_ET;   //!
 //   TBranch        *b_T_METgen_Phi;   //!
 //   TBranch        *b_T_passTriggerDoubleMu;   //!
@@ -707,63 +707,63 @@ void GeneralSkimmer::Init(TTree *tree)
 //   T_Gen_MuonSt3_pdgId = 0;
 //   T_Gen_MuonSt3_firstMother = 0;
 //   T_Gen_MuonSt3_i = 0;
-   T_Gen_MuonSt3_energy = 0;
+   T_Gen_Muon_Energy = 0;
 //   T_Gen_MuonSt3_pt = 0;
 //   T_Gen_MuonSt3_eta = 0;
 //   T_Gen_MuonSt3_phi = 0;
 //   T_Gen_ElecSt3_pdgId = 0;
 //   T_Gen_ElecSt3_firstMother = 0;
 //   T_Gen_ElecSt3_i = 0;
-   T_Gen_ElecSt3_energy = 0;
+   T_Gen_Elec_Energy = 0;
 //   T_Gen_ElecSt3_pt = 0;
 //   T_Gen_ElecSt3_eta = 0;
 //   T_Gen_ElecSt3_phi = 0;
 //   T_Gen_TauSt3_pdgId = 0;
 //   T_Gen_TauSt3_firstMother = 0;
 //   T_Gen_TauSt3_i = 0;
-   T_Gen_TauSt3_energy = 0;
+   T_Gen_Tau_Energy = 0;
 //   T_Gen_TauSt3_pt = 0;
 //   T_Gen_TauSt3_eta = 0;
 //   T_Gen_TauSt3_phi = 0;
 //   T_Gen_StopSt3_pdgId = 0;
 //   T_Gen_StopSt3_firstMother = 0;
 //   T_Gen_StopSt3_i = 0;
-//   T_Gen_StopSt3_energy = 0;
+//   T_Gen_Stop_Energy = 0;
 //   T_Gen_StopSt3_pt = 0;
 //   T_Gen_StopSt3_eta = 0;
 //   T_Gen_StopSt3_phi = 0;
 //   T_Gen_Chi0St3_pdgId = 0;
 //   T_Gen_Chi0St3_firstMother = 0;
 //   T_Gen_Chi0St3_i = 0;
-//   T_Gen_Chi0St3_energy = 0;
+//   T_Gen_Chi0_Energy = 0;
 //   T_Gen_Chi0St3_pt = 0;
 //   T_Gen_Chi0St3_eta = 0;
 //   T_Gen_Chi0St3_phi = 0;
 //   T_Gen_ChiPMSt3_pdgId = 0;
 //   T_Gen_ChiPMSt3_firstMother = 0;
 //   T_Gen_ChiPMSt3_i = 0;
-//   T_Gen_ChiPMSt3_energy = 0;
+//   T_Gen_ChiPM_Energy = 0;
 //   T_Gen_ChiPMSt3_pt = 0;
 //   T_Gen_ChiPMSt3_eta = 0;
 //   T_Gen_ChiPMSt3_phi = 0;
 //   T_Gen_bSt3_pdgId = 0;
 //   T_Gen_bSt3_firstMother = 0;
 //   T_Gen_bSt3_i = 0;
-//   T_Gen_bSt3_energy = 0;
+//   T_Gen_b_Energy = 0;
 //   T_Gen_bSt3_pt = 0;
 //   T_Gen_bSt3_eta = 0;
 //   T_Gen_bSt3_phi = 0;
 //   T_Gen_tSt3_pdgId = 0;
 //   T_Gen_tSt3_firstMother = 0;
 //   T_Gen_tSt3_i = 0;
-//   T_Gen_tSt3_energy = 0;
+//   T_Gen_t_Energy = 0;
 //   T_Gen_tSt3_pt = 0;
 //   T_Gen_tSt3_eta = 0;
 //   T_Gen_tSt3_phi = 0;
 //   T_Gen_WSt3_pdgId = 0;
 //   T_Gen_WSt3_firstMother = 0;
 //   T_Gen_WSt3_i = 0;
-//   T_Gen_WSt3_energy = 0;
+//   T_Gen_W_Energy = 0;
 //   T_Gen_WSt3_pt = 0;
 //   T_Gen_WSt3_eta = 0;
 //   T_Gen_WSt3_phi = 0;
@@ -811,12 +811,12 @@ void GeneralSkimmer::Init(TTree *tree)
 //   T_Muon_vy = 0;
 //   T_Muon_vx = 0;
    T_Muon_NumOfMatchedStations = 0;
-   T_Muon_PFMuonPt = 0;
+//   T_Muon_PFMuonPt = 0;
 //   T_Muon_PFMuonPx = 0;
 //   T_Muon_PFMuonPy = 0;
 //   T_Muon_PFMuonPz = 0;
 //   T_Muon_PFMuonE = 0;
-   T_Muon_isPFMuon = 0;
+//   T_Muon_isPFMuon = 0;
    T_Muon_NLayers = 0;
    T_Vertex_z = 0;
 //   T_Vertex_y = 0;
@@ -846,7 +846,7 @@ void GeneralSkimmer::Init(TTree *tree)
    T_Elec_isEB = 0;
    T_Elec_isEE = 0;
 //   T_Elec_MVA = 0;
-   T_Elec_simpleEleId80 = 0;
+   T_Elec_MVAoutput = 0;
    T_Elec_chargedHadronIso = 0;
    T_Elec_neutralHadronIso = 0;
    T_Elec_photonIso = 0;
@@ -877,8 +877,8 @@ void GeneralSkimmer::Init(TTree *tree)
    T_JetAKCHS_Eta = 0;
    T_JetAKCHS_Energy = 0;
 //   T_JetAKCHS_Tag_HighEffTC = 0;
-   T_JetAKCHS_Tag_CombSVtx = 0;
-//   T_JetAKCHS_Tag_CombSVtxMVA = 0;
+   T_JetAKCHS_Tag_pfCombinedSVtx = 0;
+//   T_JetAKCHS_Tag_pfCombinedSVtxMVA = 0;
 //   T_JetAKCHS_Tag_TauJet = 0;
 //   T_JetAKCHS_Tag_ImpParMVA = 0;
 //   T_JetAKCHS_Tag_JetBProb = 0;
@@ -917,8 +917,9 @@ void GeneralSkimmer::Init(TTree *tree)
    fChain = tree;
    fChain->SetMakeClass(1);
 
+
    fChain->SetBranchAddress("T_Event_Rho", &T_Event_Rho, &b_T_Event_Rho);
-   fChain->SetBranchAddress("T_Event_RhoIso", &T_Event_RhoIso, &b_T_Event_RhoIso);
+//   fChain->SetBranchAddress("T_Event_RhoIso", &T_Event_RhoIso, &b_T_Event_RhoIso);
 //   fChain->SetBranchAddress("T_EventF_EcalDeadCell", &T_EventF_EcalDeadCell, &b_T_EventF_EcalDeadCell);
 //   fChain->SetBranchAddress("T_EventF_logErrorTooManyClusters", &T_EventF_logErrorTooManyClusters, &b_T_EventF_logErrorTooManyClusters);
 //   fChain->SetBranchAddress("T_EventF_trackingFailure", &T_EventF_trackingFailure, &b_T_EventF_trackingFailure);
@@ -984,63 +985,63 @@ void GeneralSkimmer::Init(TTree *tree)
 //   fChain->SetBranchAddress("T_Gen_MuonSt3_pdgId", &T_Gen_MuonSt3_pdgId, &b_T_Gen_MuonSt3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_MuonSt3_firstMother", &T_Gen_MuonSt3_firstMother, &b_T_Gen_MuonSt3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_MuonSt3_i", &T_Gen_MuonSt3_i, &b_T_Gen_MuonSt3_i);
-   fChain->SetBranchAddress("T_Gen_MuonSt3_energy", &T_Gen_MuonSt3_energy, &b_T_Gen_MuonSt3_energy);
+   fChain->SetBranchAddress("T_Gen_Muon_Energy", &T_Gen_Muon_Energy, &b_T_Gen_Muon_Energy);
 //   fChain->SetBranchAddress("T_Gen_MuonSt3_pt", &T_Gen_MuonSt3_pt, &b_T_Gen_MuonSt3_pt);
 //   fChain->SetBranchAddress("T_Gen_MuonSt3_eta", &T_Gen_MuonSt3_eta, &b_T_Gen_MuonSt3_eta);
 //   fChain->SetBranchAddress("T_Gen_MuonSt3_phi", &T_Gen_MuonSt3_phi, &b_T_Gen_MuonSt3_phi);
 //   fChain->SetBranchAddress("T_Gen_ElecSt3_pdgId", &T_Gen_ElecSt3_pdgId, &b_T_Gen_ElecSt3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_ElecSt3_firstMother", &T_Gen_ElecSt3_firstMother, &b_T_Gen_ElecSt3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_ElecSt3_i", &T_Gen_ElecSt3_i, &b_T_Gen_ElecSt3_i);
-   fChain->SetBranchAddress("T_Gen_ElecSt3_energy", &T_Gen_ElecSt3_energy, &b_T_Gen_ElecSt3_energy);
+   fChain->SetBranchAddress("T_Gen_Elec_Energy", &T_Gen_Elec_Energy, &b_T_Gen_Elec_Energy);
 //   fChain->SetBranchAddress("T_Gen_ElecSt3_pt", &T_Gen_ElecSt3_pt, &b_T_Gen_ElecSt3_pt);
 //   fChain->SetBranchAddress("T_Gen_ElecSt3_eta", &T_Gen_ElecSt3_eta, &b_T_Gen_ElecSt3_eta);
 //   fChain->SetBranchAddress("T_Gen_ElecSt3_phi", &T_Gen_ElecSt3_phi, &b_T_Gen_ElecSt3_phi);
 //   fChain->SetBranchAddress("T_Gen_TauSt3_pdgId", &T_Gen_TauSt3_pdgId, &b_T_Gen_TauSt3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_TauSt3_firstMother", &T_Gen_TauSt3_firstMother, &b_T_Gen_TauSt3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_TauSt3_i", &T_Gen_TauSt3_i, &b_T_Gen_TauSt3_i);
-   fChain->SetBranchAddress("T_Gen_TauSt3_energy", &T_Gen_TauSt3_energy, &b_T_Gen_TauSt3_energy);
+   fChain->SetBranchAddress("T_Gen_Tau_Energy", &T_Gen_Tau_Energy, &b_T_Gen_Tau_Energy);
 //   fChain->SetBranchAddress("T_Gen_TauSt3_pt", &T_Gen_TauSt3_pt, &b_T_Gen_TauSt3_pt);
 //   fChain->SetBranchAddress("T_Gen_TauSt3_eta", &T_Gen_TauSt3_eta, &b_T_Gen_TauSt3_eta);
 //   fChain->SetBranchAddress("T_Gen_TauSt3_phi", &T_Gen_TauSt3_phi, &b_T_Gen_TauSt3_phi);
 //   fChain->SetBranchAddress("T_Gen_StopSt3_pdgId", &T_Gen_StopSt3_pdgId, &b_T_Gen_StopSt3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_StopSt3_firstMother", &T_Gen_StopSt3_firstMother, &b_T_Gen_StopSt3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_StopSt3_i", &T_Gen_StopSt3_i, &b_T_Gen_StopSt3_i);
-//   fChain->SetBranchAddress("T_Gen_StopSt3_energy", &T_Gen_StopSt3_energy, &b_T_Gen_StopSt3_energy);
+//   fChain->SetBranchAddress("T_Gen_Stop_Energy", &T_Gen_Stop_Energy, &b_T_Gen_Stop_Energy);
 //   fChain->SetBranchAddress("T_Gen_StopSt3_pt", &T_Gen_StopSt3_pt, &b_T_Gen_StopSt3_pt);
 //   fChain->SetBranchAddress("T_Gen_StopSt3_eta", &T_Gen_StopSt3_eta, &b_T_Gen_StopSt3_eta);
 //   fChain->SetBranchAddress("T_Gen_StopSt3_phi", &T_Gen_StopSt3_phi, &b_T_Gen_StopSt3_phi);
 //   fChain->SetBranchAddress("T_Gen_Chi0St3_pdgId", &T_Gen_Chi0St3_pdgId, &b_T_Gen_Chi0St3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_Chi0St3_firstMother", &T_Gen_Chi0St3_firstMother, &b_T_Gen_Chi0St3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_Chi0St3_i", &T_Gen_Chi0St3_i, &b_T_Gen_Chi0St3_i);
-//   fChain->SetBranchAddress("T_Gen_Chi0St3_energy", &T_Gen_Chi0St3_energy, &b_T_Gen_Chi0St3_energy);
+//   fChain->SetBranchAddress("T_Gen_Chi0_Energy", &T_Gen_Chi0_Energy, &b_T_Gen_Chi0_Energy);
 //   fChain->SetBranchAddress("T_Gen_Chi0St3_pt", &T_Gen_Chi0St3_pt, &b_T_Gen_Chi0St3_pt);
 //   fChain->SetBranchAddress("T_Gen_Chi0St3_eta", &T_Gen_Chi0St3_eta, &b_T_Gen_Chi0St3_eta);
 //   fChain->SetBranchAddress("T_Gen_Chi0St3_phi", &T_Gen_Chi0St3_phi, &b_T_Gen_Chi0St3_phi);
 //   fChain->SetBranchAddress("T_Gen_ChiPMSt3_pdgId", &T_Gen_ChiPMSt3_pdgId, &b_T_Gen_ChiPMSt3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_ChiPMSt3_firstMother", &T_Gen_ChiPMSt3_firstMother, &b_T_Gen_ChiPMSt3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_ChiPMSt3_i", &T_Gen_ChiPMSt3_i, &b_T_Gen_ChiPMSt3_i);
-//   fChain->SetBranchAddress("T_Gen_ChiPMSt3_energy", &T_Gen_ChiPMSt3_energy, &b_T_Gen_ChiPMSt3_energy);
+//   fChain->SetBranchAddress("T_Gen_ChiPM_Energy", &T_Gen_ChiPM_Energy, &b_T_Gen_ChiPM_Energy);
 //   fChain->SetBranchAddress("T_Gen_ChiPMSt3_pt", &T_Gen_ChiPMSt3_pt, &b_T_Gen_ChiPMSt3_pt);
 //   fChain->SetBranchAddress("T_Gen_ChiPMSt3_eta", &T_Gen_ChiPMSt3_eta, &b_T_Gen_ChiPMSt3_eta);
 //   fChain->SetBranchAddress("T_Gen_ChiPMSt3_phi", &T_Gen_ChiPMSt3_phi, &b_T_Gen_ChiPMSt3_phi);
 //   fChain->SetBranchAddress("T_Gen_bSt3_pdgId", &T_Gen_bSt3_pdgId, &b_T_Gen_bSt3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_bSt3_firstMother", &T_Gen_bSt3_firstMother, &b_T_Gen_bSt3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_bSt3_i", &T_Gen_bSt3_i, &b_T_Gen_bSt3_i);
-//   fChain->SetBranchAddress("T_Gen_bSt3_energy", &T_Gen_bSt3_energy, &b_T_Gen_bSt3_energy);
+//   fChain->SetBranchAddress("T_Gen_b_Energy", &T_Gen_b_Energy, &b_T_Gen_b_Energy);
 //   fChain->SetBranchAddress("T_Gen_bSt3_pt", &T_Gen_bSt3_pt, &b_T_Gen_bSt3_pt);
 //   fChain->SetBranchAddress("T_Gen_bSt3_eta", &T_Gen_bSt3_eta, &b_T_Gen_bSt3_eta);
 //   fChain->SetBranchAddress("T_Gen_bSt3_phi", &T_Gen_bSt3_phi, &b_T_Gen_bSt3_phi);
 //   fChain->SetBranchAddress("T_Gen_tSt3_pdgId", &T_Gen_tSt3_pdgId, &b_T_Gen_tSt3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_tSt3_firstMother", &T_Gen_tSt3_firstMother, &b_T_Gen_tSt3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_tSt3_i", &T_Gen_tSt3_i, &b_T_Gen_tSt3_i);
-//   fChain->SetBranchAddress("T_Gen_tSt3_energy", &T_Gen_tSt3_energy, &b_T_Gen_tSt3_energy);
+//   fChain->SetBranchAddress("T_Gen_t_Energy", &T_Gen_t_Energy, &b_T_Gen_t_Energy);
 //   fChain->SetBranchAddress("T_Gen_tSt3_pt", &T_Gen_tSt3_pt, &b_T_Gen_tSt3_pt);
 //   fChain->SetBranchAddress("T_Gen_tSt3_eta", &T_Gen_tSt3_eta, &b_T_Gen_tSt3_eta);
 //   fChain->SetBranchAddress("T_Gen_tSt3_phi", &T_Gen_tSt3_phi, &b_T_Gen_tSt3_phi);
 //   fChain->SetBranchAddress("T_Gen_WSt3_pdgId", &T_Gen_WSt3_pdgId, &b_T_Gen_WSt3_pdgId);
 //   fChain->SetBranchAddress("T_Gen_WSt3_firstMother", &T_Gen_WSt3_firstMother, &b_T_Gen_WSt3_firstMother);
 //   fChain->SetBranchAddress("T_Gen_WSt3_i", &T_Gen_WSt3_i, &b_T_Gen_WSt3_i);
-//   fChain->SetBranchAddress("T_Gen_WSt3_energy", &T_Gen_WSt3_energy, &b_T_Gen_WSt3_energy);
+//   fChain->SetBranchAddress("T_Gen_W_Energy", &T_Gen_W_Energy, &b_T_Gen_W_Energy);
 //   fChain->SetBranchAddress("T_Gen_WSt3_pt", &T_Gen_WSt3_pt, &b_T_Gen_WSt3_pt);
 //   fChain->SetBranchAddress("T_Gen_WSt3_eta", &T_Gen_WSt3_eta, &b_T_Gen_WSt3_eta);
 //   fChain->SetBranchAddress("T_Gen_WSt3_phi", &T_Gen_WSt3_phi, &b_T_Gen_WSt3_phi);
@@ -1088,12 +1089,12 @@ void GeneralSkimmer::Init(TTree *tree)
 //   fChain->SetBranchAddress("T_Muon_vy", &T_Muon_vy, &b_T_Muon_vy);
 //   fChain->SetBranchAddress("T_Muon_vx", &T_Muon_vx, &b_T_Muon_vx);
    fChain->SetBranchAddress("T_Muon_NumOfMatchedStations", &T_Muon_NumOfMatchedStations, &b_T_Muon_NumOfMatchedStations);
-   fChain->SetBranchAddress("T_Muon_PFMuonPt", &T_Muon_PFMuonPt, &b_T_Muon_PFMuonPt);
+//   fChain->SetBranchAddress("T_Muon_PFMuonPt", &T_Muon_PFMuonPt, &b_T_Muon_PFMuonPt);
 //   fChain->SetBranchAddress("T_Muon_PFMuonPx", &T_Muon_PFMuonPx, &b_T_Muon_PFMuonPx);
 //   fChain->SetBranchAddress("T_Muon_PFMuonPy", &T_Muon_PFMuonPy, &b_T_Muon_PFMuonPy);
 //   fChain->SetBranchAddress("T_Muon_PFMuonPz", &T_Muon_PFMuonPz, &b_T_Muon_PFMuonPz);
 //   fChain->SetBranchAddress("T_Muon_PFMuonE", &T_Muon_PFMuonE, &b_T_Muon_PFMuonE);
-   fChain->SetBranchAddress("T_Muon_isPFMuon", &T_Muon_isPFMuon, &b_T_Muon_isPFMuon);
+//   fChain->SetBranchAddress("T_Muon_isPFMuon", &T_Muon_isPFMuon, &b_T_Muon_isPFMuon);
    fChain->SetBranchAddress("T_Muon_NLayers", &T_Muon_NLayers, &b_T_Muon_NLayers);
    fChain->SetBranchAddress("T_Vertex_z", &T_Vertex_z, &b_T_Vertex_z);
 //   fChain->SetBranchAddress("T_Vertex_y", &T_Vertex_y, &b_T_Vertex_y);
@@ -1123,7 +1124,7 @@ void GeneralSkimmer::Init(TTree *tree)
    fChain->SetBranchAddress("T_Elec_isEB", &T_Elec_isEB, &b_T_Elec_isEB);
    fChain->SetBranchAddress("T_Elec_isEE", &T_Elec_isEE, &b_T_Elec_isEE);
 //   fChain->SetBranchAddress("T_Elec_MVA", &T_Elec_MVA, &b_T_Elec_MVA);
-   fChain->SetBranchAddress("T_Elec_simpleEleId80", &T_Elec_simpleEleId80, &b_T_Elec_simpleEleId80);
+   fChain->SetBranchAddress("T_Elec_MVAoutput", &T_Elec_MVAoutput, &b_T_Elec_MVAoutput);
    fChain->SetBranchAddress("T_Elec_chargedHadronIso", &T_Elec_chargedHadronIso, &b_T_Elec_chargedHadronIso);
    fChain->SetBranchAddress("T_Elec_neutralHadronIso", &T_Elec_neutralHadronIso, &b_T_Elec_neutralHadronIso);
    fChain->SetBranchAddress("T_Elec_photonIso", &T_Elec_photonIso, &b_T_Elec_photonIso);
@@ -1154,8 +1155,8 @@ void GeneralSkimmer::Init(TTree *tree)
    fChain->SetBranchAddress("T_JetAKCHS_Eta", &T_JetAKCHS_Eta, &b_T_JetAKCHS_Eta);
    fChain->SetBranchAddress("T_JetAKCHS_Energy", &T_JetAKCHS_Energy, &b_T_JetAKCHS_Energy);
 //   fChain->SetBranchAddress("T_JetAKCHS_Tag_HighEffTC", &T_JetAKCHS_Tag_HighEffTC, &b_T_JetAKCHS_Tag_HighEffTC);
-   fChain->SetBranchAddress("T_JetAKCHS_Tag_CombSVtx", &T_JetAKCHS_Tag_CombSVtx, &b_T_JetAKCHS_Tag_CombSVtx);
-//   fChain->SetBranchAddress("T_JetAKCHS_Tag_CombSVtxMVA", &T_JetAKCHS_Tag_CombSVtxMVA, &b_T_JetAKCHS_Tag_CombSVtxMVA);
+   fChain->SetBranchAddress("T_JetAKCHS_Tag_pfCombinedSVtx", &T_JetAKCHS_Tag_pfCombinedSVtx, &b_T_JetAKCHS_Tag_pfCombinedSVtx);
+//   fChain->SetBranchAddress("T_JetAKCHS_Tag_pfCombinedSVtxMVA", &T_JetAKCHS_Tag_pfCombinedSVtxMVA, &b_T_JetAKCHS_Tag_pfCombinedSVtxMVA);
 //   fChain->SetBranchAddress("T_JetAKCHS_Tag_TauJet", &T_JetAKCHS_Tag_TauJet, &b_T_JetAKCHS_Tag_TauJet);
 //   fChain->SetBranchAddress("T_JetAKCHS_Tag_ImpParMVA", &T_JetAKCHS_Tag_ImpParMVA, &b_T_JetAKCHS_Tag_ImpParMVA);
 //   fChain->SetBranchAddress("T_JetAKCHS_Tag_JetBProb", &T_JetAKCHS_Tag_JetBProb, &b_T_JetAKCHS_Tag_JetBProb);
@@ -1192,9 +1193,9 @@ void GeneralSkimmer::Init(TTree *tree)
 //   fChain->SetBranchAddress("T_METPF_ET", &T_METPF_ET, &b_T_METPF_ET);
 //   fChain->SetBranchAddress("T_METPF_Phi", &T_METPF_Phi, &b_T_METPF_Phi);
 //   fChain->SetBranchAddress("T_METPF_Sig", &T_METPF_Sig, &b_T_METPF_Sig);
-   fChain->SetBranchAddress("T_METPFTypeI_ET", &T_METPFTypeI_ET, &b_T_METPFTypeI_ET);
-   fChain->SetBranchAddress("T_METPFTypeI_Phi", &T_METPFTypeI_Phi, &b_T_METPFTypeI_Phi);
-   fChain->SetBranchAddress("T_METPFTypeI_Sig", &T_METPFTypeI_Sig, &b_T_METPFTypeI_Sig);
+   fChain->SetBranchAddress("T_METPF_ET", &T_METPF_ET, &b_T_METPF_ET);
+   fChain->SetBranchAddress("T_METPF_Phi", &T_METPF_Phi, &b_T_METPF_Phi);
+//   fChain->SetBranchAddress("T_METPF_Sig", &T_METPF_Sig, &b_T_METPF_Sig);
 //   fChain->SetBranchAddress("T_METgen_ET", &T_METgen_ET, &b_T_METgen_ET);
 //   fChain->SetBranchAddress("T_METgen_Phi", &T_METgen_Phi, &b_T_METgen_Phi);
 //   fChain->SetBranchAddress("T_passTriggerDoubleMu", &T_passTriggerDoubleMu, &b_T_passTriggerDoubleMu);

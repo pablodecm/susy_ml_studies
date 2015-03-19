@@ -63,7 +63,7 @@ void processTChain( std::vector<TString> filenames, TString option,  long n_even
 
   
   // create TChain and add all filenames 
-  TChain * tchain = new TChain("Tree");
+  TChain * tchain = new TChain("demo/Tree");
   for ( std::size_t i = 0; i < filenames.size(); i++ ) {
     std::cout << " Adding file: " << filenames[i];
     // -1 option so file is checked (return 1 if file is correct or 0 otherwise)
