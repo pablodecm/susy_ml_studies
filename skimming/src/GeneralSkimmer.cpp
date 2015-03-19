@@ -292,7 +292,7 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
             bool isBJet = T_JetAKCHS_Tag_pfCombinedSVtx->at(i) > 0.679;
             if (isBJet) _ev_topo->n_b_jet++;
             // keep only two higher pt jets
-            while(vJet.size() < 3) {
+            if (vJet.size() < 3) {
               TLorentzVector gJet( T_JetAKCHS_Px->at(i), T_JetAKCHS_Py->at(i),
                                    T_JetAKCHS_Pz->at(i), T_JetAKCHS_Energy->at(i));
               vJet.push_back(gJet);
