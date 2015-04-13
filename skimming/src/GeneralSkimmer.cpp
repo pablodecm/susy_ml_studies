@@ -324,18 +324,14 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
 
     // basic selection for ee and mumu channels 
     if ( (_ev_topo->channel == 0 || _ev_topo->channel == 1 ) && 
-         (_ev_high->dilept_inv_mass > 20) && isOppSign &&
-         (_ev_reco->pfmet_Et > 40) &&
-         (_ev_high->dilept_inv_mass < 76 || _ev_high->dilept_inv_mass > 106) &&
-         (_ev_topo->n_jet > 1) && (_ev_topo->n_b_jet > 0)
+         isOppSign 
        ) {
       _skimTree->Fill();
     }
 
     // basic selection for emu and mue channel
     if ( (_ev_topo->channel == 2) &&
-         (_ev_high->dilept_inv_mass > 20) && isOppSign &&
-         (_ev_topo->n_jet > 1) && (_ev_topo->n_b_jet > 0)
+         isOppSign 
        ) {
       _skimTree->Fill();
     }
