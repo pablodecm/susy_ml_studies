@@ -205,7 +205,7 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
 
         if(T_Muon_IsGlobalMuon->at(i) &&
            T_Muon_IsGMPTMuons->at(i) &&
-           // T_Muon_isPFMuon->at(i) && // are not PF all of them?
+           T_Muon_IsPFMuon->at(i) && 
            T_Muon_NormChi2GTrk->at(i) < 10 &&  // not in FRs code ( normalized is important!)
            T_Muon_NValidHitsInTrk->at(i) > 0 &&  // not in FRs code
            T_Muon_NumOfMatchedStations->at(i) > 1 &&

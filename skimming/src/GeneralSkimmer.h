@@ -220,7 +220,7 @@ public :
    std::vector<float>   *T_Muon_photonIsoR03;
 //   std::vector<float>   *T_Muon_sumPUPtR04;
    std::vector<float>   *T_Muon_sumPUPtR03;
-   std::vector<float>   *T_Muon_vz;
+   std::vector<float>   *T_Muon_vz; 
 //   std::vector<float>   *T_Muon_vy;
 //   std::vector<float>   *T_Muon_vx;
    std::vector<int>     *T_Muon_NumOfMatchedStations;
@@ -229,7 +229,7 @@ public :
 //   std::vector<float>   *T_Muon_PFMuonPy;
 //   std::vector<float>   *T_Muon_PFMuonPz;
 //   std::vector<float>   *T_Muon_PFMuonE;
-//   std::vector<bool>    *T_Muon_isPFMuon;
+   std::vector<bool>    *T_Muon_IsPFMuon;
    std::vector<int>     *T_Muon_NLayers;
    std::vector<float>   *T_Vertex_z;
 //   std::vector<float>   *T_Vertex_y;
@@ -514,7 +514,7 @@ public :
 //   TBranch        *b_T_Muon_PFMuonPy;   //!
 //   TBranch        *b_T_Muon_PFMuonPz;   //!
 //   TBranch        *b_T_Muon_PFMuonE;   //!
-//   TBranch        *b_T_Muon_isPFMuon;   //!
+   TBranch        *b_T_Muon_IsPFMuon;   //!
    TBranch        *b_T_Muon_NLayers;   //!
    TBranch        *b_T_Vertex_z;   //!
 //   TBranch        *b_T_Vertex_y;   //!
@@ -816,7 +816,7 @@ void GeneralSkimmer::Init(TTree *tree)
 //   T_Muon_PFMuonPy = 0;
 //   T_Muon_PFMuonPz = 0;
 //   T_Muon_PFMuonE = 0;
-//   T_Muon_isPFMuon = 0;
+   T_Muon_IsPFMuon = 0;
    T_Muon_NLayers = 0;
    T_Vertex_z = 0;
 //   T_Vertex_y = 0;
@@ -1085,7 +1085,7 @@ void GeneralSkimmer::Init(TTree *tree)
    fChain->SetBranchAddress("T_Muon_photonIsoR03", &T_Muon_photonIsoR03, &b_T_Muon_photonIsoR03);
 //   fChain->SetBranchAddress("T_Muon_sumPUPtR04", &T_Muon_sumPUPtR04, &b_T_Muon_sumPUPtR04);
    fChain->SetBranchAddress("T_Muon_sumPUPtR03", &T_Muon_sumPUPtR03, &b_T_Muon_sumPUPtR03);
-   fChain->SetBranchAddress("T_Muon_vz", &T_Muon_vz, &b_T_Muon_vz);
+   fChain->SetBranchAddress("T_Muon_BestTrack_vz", &T_Muon_vz, &b_T_Muon_vz); // best track muon instead of muon_vz
 //   fChain->SetBranchAddress("T_Muon_vy", &T_Muon_vy, &b_T_Muon_vy);
 //   fChain->SetBranchAddress("T_Muon_vx", &T_Muon_vx, &b_T_Muon_vx);
    fChain->SetBranchAddress("T_Muon_NumOfMatchedStations", &T_Muon_NumOfMatchedStations, &b_T_Muon_NumOfMatchedStations);
@@ -1094,7 +1094,7 @@ void GeneralSkimmer::Init(TTree *tree)
 //   fChain->SetBranchAddress("T_Muon_PFMuonPy", &T_Muon_PFMuonPy, &b_T_Muon_PFMuonPy);
 //   fChain->SetBranchAddress("T_Muon_PFMuonPz", &T_Muon_PFMuonPz, &b_T_Muon_PFMuonPz);
 //   fChain->SetBranchAddress("T_Muon_PFMuonE", &T_Muon_PFMuonE, &b_T_Muon_PFMuonE);
-//   fChain->SetBranchAddress("T_Muon_isPFMuon", &T_Muon_isPFMuon, &b_T_Muon_isPFMuon);
+   fChain->SetBranchAddress("T_Muon_IsPFMuon", &T_Muon_IsPFMuon, &b_T_Muon_IsPFMuon);
    fChain->SetBranchAddress("T_Muon_NLayers", &T_Muon_NLayers, &b_T_Muon_NLayers);
    fChain->SetBranchAddress("T_Vertex_z", &T_Vertex_z, &b_T_Vertex_z);
 //   fChain->SetBranchAddress("T_Vertex_y", &T_Vertex_y, &b_T_Vertex_y);
