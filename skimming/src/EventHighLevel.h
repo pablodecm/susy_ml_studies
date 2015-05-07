@@ -9,6 +9,7 @@ class EventHighLevel {
     float dilept_inv_mass;
     float dilepton_MT2;
     float jets_ht;
+    float max_CSV;
 
     EventHighLevel() {}
 

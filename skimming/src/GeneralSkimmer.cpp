@@ -29,6 +29,7 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TFile.h>
+#include <limits>
 
 
 
@@ -282,45 +283,60 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
     _ev_topo->n_jet = 0;
     _ev_topo->n_b_jet = 0;
     _ev_high->jets_ht = 0;
+    _ev_high->max_CSV = std::numeric_limits<float>::lowest();
     for ( int i = 0 ; i < nJet; i++) {
+        TLorentzVector jet( T_JetAKCHS_Px->at(i), T_JetAKCHS_Py->at(i),
+                             T_JetAKCHS_Pz->at(i), T_JetAKCHS_Energy->at(i));
+        // check if jets are cleaned of selected leptons
+        bool isClean = true;
+        for (auto lept : vLept ) {
+          if (jet.DeltaR(lept) < 0.5) isClean = false;
+        } // end cleaning check
         if (T_JetAKCHS_Et->at(i) > 30 &&
-            fabs(T_JetAKCHS_Eta->at(i)) < 2.4 ) {
+            fabs(T_JetAKCHS_Eta->at(i)) < 2.4 &&
+            isClean ) {
             // add energy to ht
             _ev_high->jets_ht += T_JetAKCHS_Et->at(i);
             _ev_topo->n_jet++;
             // check if bjet ( CSV medium working point)
             bool isBJet = T_JetAKCHS_Tag_pfCombinedSVtx->at(i) > 0.679;
+            if (T_JetAKCHS_Tag_pfCombinedSVtx->at(i) >_ev_high->max_CSV) 
+               _ev_high->max_CSV = T_JetAKCHS_Tag_pfCombinedSVtx->at(i);
             if (isBJet) _ev_topo->n_b_jet++;
             // keep only two higher pt jets
             if (vJet.size() < 3) {
-              TLorentzVector gJet( T_JetAKCHS_Px->at(i), T_JetAKCHS_Py->at(i),
-                                   T_JetAKCHS_Pz->at(i), T_JetAKCHS_Energy->at(i));
-              vJet.push_back(gJet);
+              vJet.push_back(jet);
               vJet_CSV.push_back(T_JetAKCHS_Tag_pfCombinedSVtx->at(i));
             } // end only saving two jets 
         } // end good jet loop
     } // end jet loop
 
     
-    if ((vLept.size() > 1) && (vJet.size() > 1 )) {
+    if (vLept.size() > 1) {
     // assign leptons
     _ev_reco->SetLeadingLepton(vLept[0]);
     _ev_reco->SetTrailingLepton(vLept[1]);
+     // dilepton invariant mass
+     _ev_high->dilept_inv_mass = (vLept[0]+vLept[1]).M();
+     // dilepton MT2
+     _ev_high->dilepton_MT2 = getMT2(vLept[0], vLept[1],
+                                    _ev_reco->pfmet_Et, _ev_reco->pfmet_Phi);
+    }
+
     // assign tranverse energy variables
     _ev_reco->pfmet_Et = T_METPF_ET; 
     _ev_reco->pfmet_Phi = T_METPF_Phi;
     // MET sig not avaliable for PHYS14
     _ev_reco->pfmet_Sig = -1; 
+
+
+    if(vJet.size() > 1 ) {
     // assign jets
     _ev_reco->SetLeadingJet(vJet[0], vJet_CSV[0]);
     _ev_reco->SetTrailingJet(vJet[1], vJet_CSV[1]);
-
-     // dilepton invariant mass
-     _ev_high->dilept_inv_mass = (vLept[0]+vLept[1]).M();
-     // dilepton MT2
-     _ev_high->dilepton_MT2 = getMT2(vLept[0], vLept[1],
-                                     _ev_reco->pfmet_Et, _ev_reco->pfmet_Phi);
+    
     }
+         
 
     // basic selection for ee and mumu channels 
     if ( (_ev_topo->channel == 0 || _ev_topo->channel == 1 ) && 
