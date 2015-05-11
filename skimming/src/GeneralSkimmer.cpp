@@ -299,14 +299,14 @@ Bool_t GeneralSkimmer::Process(Long64_t entry)
             _ev_high->jets_ht += T_JetAKCHS_Et->at(i);
             _ev_topo->n_jet++;
             // check if bjet ( CSV medium working point)
-            bool isBJet = T_JetAKCHS_Tag_pfCombinedSVtx->at(i) > 0.679;
-            if (T_JetAKCHS_Tag_pfCombinedSVtx->at(i) >_ev_high->max_CSV) 
-               _ev_high->max_CSV = T_JetAKCHS_Tag_pfCombinedSVtx->at(i);
+            bool isBJet = T_JetAKCHS_Tag_pfCombInclusiveSVtxV2->at(i) > 0.679;
+            if (T_JetAKCHS_Tag_pfCombInclusiveSVtxV2->at(i) >_ev_high->max_CSV) 
+               _ev_high->max_CSV = T_JetAKCHS_Tag_pfCombInclusiveSVtxV2->at(i);
             if (isBJet) _ev_topo->n_b_jet++;
             // keep only two higher pt jets
             if (vJet.size() < 3) {
               vJet.push_back(jet);
-              vJet_CSV.push_back(T_JetAKCHS_Tag_pfCombinedSVtx->at(i));
+              vJet_CSV.push_back(T_JetAKCHS_Tag_pfCombInclusiveSVtxV2->at(i));
             } // end only saving two jets 
         } // end good jet loop
     } // end jet loop

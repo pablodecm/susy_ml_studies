@@ -290,7 +290,8 @@ public :
    std::vector<float>   *T_JetAKCHS_Eta;
    std::vector<float>   *T_JetAKCHS_Energy;
 //   std::vector<float>   *T_JetAKCHS_Tag_HighEffTC;
-   std::vector<float>   *T_JetAKCHS_Tag_pfCombinedSVtx;
+//   std::vector<float>   *T_JetAKCHS_Tag_pfCombinedSVtx;
+   std::vector<float>   *T_JetAKCHS_Tag_pfCombInclusiveSVtxV2;
 //   std::vector<float>   *T_JetAKCHS_Tag_pfCombinedSVtxMVA;
 //   std::vector<float>   *T_JetAKCHS_Tag_TauJet;
 //   std::vector<float>   *T_JetAKCHS_Tag_ImpParMVA;
@@ -575,7 +576,8 @@ public :
    TBranch        *b_T_JetAKCHS_Eta;   //!
    TBranch        *b_T_JetAKCHS_Energy;   //!
 //   TBranch        *b_T_JetAKCHS_Tag_HighEffTC;   //!
-   TBranch        *b_T_JetAKCHS_Tag_pfCombinedSVtx;   //!
+//   TBranch        *b_T_JetAKCHS_Tag_pfCombinedSVtx;   //!
+   TBranch        *b_T_JetAKCHS_Tag_pfCombInclusiveSVtxV2;   //!
 //   TBranch        *b_T_JetAKCHS_Tag_pfCombinedSVtxMVA;   //!
 //   TBranch        *b_T_JetAKCHS_Tag_TauJet;   //!
 //   TBranch        *b_T_JetAKCHS_Tag_ImpParMVA;   //!
@@ -877,7 +879,8 @@ void GeneralSkimmer::Init(TTree *tree)
    T_JetAKCHS_Eta = 0;
    T_JetAKCHS_Energy = 0;
 //   T_JetAKCHS_Tag_HighEffTC = 0;
-   T_JetAKCHS_Tag_pfCombinedSVtx = 0;
+//   T_JetAKCHS_Tag_pfCombinedSVtx = 0;
+   T_JetAKCHS_Tag_pfCombInclusiveSVtxV2 = 0;
 //   T_JetAKCHS_Tag_pfCombinedSVtxMVA = 0;
 //   T_JetAKCHS_Tag_TauJet = 0;
 //   T_JetAKCHS_Tag_ImpParMVA = 0;
@@ -1155,7 +1158,8 @@ void GeneralSkimmer::Init(TTree *tree)
    fChain->SetBranchAddress("T_JetAKCHS_Eta", &T_JetAKCHS_Eta, &b_T_JetAKCHS_Eta);
    fChain->SetBranchAddress("T_JetAKCHS_Energy", &T_JetAKCHS_Energy, &b_T_JetAKCHS_Energy);
 //   fChain->SetBranchAddress("T_JetAKCHS_Tag_HighEffTC", &T_JetAKCHS_Tag_HighEffTC, &b_T_JetAKCHS_Tag_HighEffTC);
-   fChain->SetBranchAddress("T_JetAKCHS_Tag_pfCombinedSVtx", &T_JetAKCHS_Tag_pfCombinedSVtx, &b_T_JetAKCHS_Tag_pfCombinedSVtx);
+//   fChain->SetBranchAddress("T_JetAKCHS_Tag_pfCombinedSVtx", &T_JetAKCHS_Tag_pfCombinedSVtx, &b_T_JetAKCHS_Tag_pfCombinedSVtx);
+   fChain->SetBranchAddress("T_JetAKCHS_Tag_pfCombInclusiveSVtxV2", &T_JetAKCHS_Tag_pfCombInclusiveSVtxV2, &b_T_JetAKCHS_Tag_pfCombInclusiveSVtxV2);
 //   fChain->SetBranchAddress("T_JetAKCHS_Tag_pfCombinedSVtxMVA", &T_JetAKCHS_Tag_pfCombinedSVtxMVA, &b_T_JetAKCHS_Tag_pfCombinedSVtxMVA);
 //   fChain->SetBranchAddress("T_JetAKCHS_Tag_TauJet", &T_JetAKCHS_Tag_TauJet, &b_T_JetAKCHS_Tag_TauJet);
 //   fChain->SetBranchAddress("T_JetAKCHS_Tag_ImpParMVA", &T_JetAKCHS_Tag_ImpParMVA, &b_T_JetAKCHS_Tag_ImpParMVA);
